@@ -1,0 +1,400 @@
+/* 吉他调音器样式 - 响应式设计，暗色主题 */
+
+:root {
+  --bg: #1a1a2e;
+  --surface: #16213e;
+  --surface-light: #1f2d4a;
+  --primary: #4cc9f0;
+  --success: #06d6a0;
+  --warning: #ffd166;
+  --danger: #ef476f;
+  --text: #e0e0e0;
+  --text-secondary: #a0a0b8;
+  --border: #2a3a5c;
+  --radius: 12px;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* 头部 */
+.header {
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.header .subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+/* 调弦模式选择 */
+.tuning-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tuning-selector label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tuning-selector select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-light);
+  color: var(--text);
+  font-size: 15px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23a0a0b8' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.tuning-selector select:focus {
+  border-color: var(--primary);
+}
+
+/* 弦选择器 */
+.string-selector {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.string-btn {
+  flex: 1;
+  max-width: 64px;
+  padding: 12px 4px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-light);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  outline: none;
+}
+
+.string-btn .note-label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.string-btn .string-label {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.string-btn.active {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(76, 201, 240, 0.1);
+}
+
+.string-btn.in-tune {
+  border-color: var(--success);
+  color: var(--success);
+  background: rgba(6, 214, 160, 0.1);
+}
+
+/* 表盘区域 */
+.meter-container {
+  background: var(--surface-light);
+  border-radius: var(--radius);
+  padding: 24px 20px 20px;
+}
+
+.meter-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.meter {
+  position: relative;
+  height: 80px;
+  border-radius: 40px;
+  background: linear-gradient(to right, var(--danger) 0%, var(--warning) 25%, var(--success) 50%, var(--warning) 75%, var(--danger) 100%);
+  overflow: hidden;
+}
+
+.meter-target {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: white;
+  z-index: 2;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+.meter-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.meter-fill {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease-out;
+  transform-origin: left center;
+}
+
+.meter-needle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: white;
+  z-index: 3;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  transition: left 0.15s ease-out;
+  border-radius: 2px;
+}
+
+/* 音符显示 */
+.note-display {
+  text-align: center;
+}
+
+.note-name {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--primary);
+  line-height: 1.1;
+  transition: color 0.3s;
+}
+
+.note-name.tuned {
+  color: var(--success);
+}
+
+.note-cents {
+  font-size: 20px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  transition: color 0.3s;
+}
+
+.note-cents.tuned {
+  color: var(--success);
+}
+
+/* 频率显示 */
+.freq-display {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* 状态栏 */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--warning);
+  transition: background 0.3s;
+}
+
+.status-dot.listening {
+  background: var(--success);
+  animation: pulse 1.5s infinite;
+}
+
+.status-dot.error {
+  background: var(--danger);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* 启动按钮 */
+.start-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: #1a1a2e;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+  letter-spacing: 2px;
+}
+
+.start-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.start-btn:active {
+  transform: translateY(0);
+}
+
+.start-btn.recording {
+  background: var(--danger);
+  color: white;
+}
+
+/* 响应式设计 */
+
+/* 移动端优化 */
+@media (max-width: 480px) {
+  body {
+    padding: 8px;
+    align-items: flex-start;
+    padding-top: 16px;
+  }
+
+  .container {
+    gap: 16px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .header h1 {
+    font-size: 24px;
+  }
+
+  .string-btn {
+    max-width: 52px;
+    padding: 10px 2px;
+  }
+
+  .string-btn .note-label {
+    font-size: 14px;
+  }
+
+  .meter {
+    height: 60px;
+    border-radius: 30px;
+  }
+
+  .note-name {
+    font-size: 44px;
+  }
+
+  .start-btn {
+    padding: 14px;
+    font-size: 16px;
+  }
+}
+
+/* 小屏手机 */
+@media (max-width: 360px) {
+  .container {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .string-selector {
+    gap: 4px;
+  }
+
+  .string-btn {
+    max-width: 44px;
+    padding: 8px 1px;
+  }
+
+  .string-btn .note-label {
+    font-size: 13px;
+  }
+
+  .string-btn .string-label {
+    font-size: 9px;
+  }
+
+  .note-name {
+    font-size: 36px;
+  }
+}
+
+/* PC 端大屏 */
+@media (min-width: 768px) {
+  .container {
+    max-width: 500px;
+  }
+}
