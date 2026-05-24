@@ -102,21 +102,32 @@ function updateNoteDisplay(note, cents, isNearTarget) {
 }
 
 function updateMeter(cents) {
-  // 将 cents (-50 ~ +50) 映射到 0% ~ 100%
-  let percent = (cents + 50) / 100 * 100;
+  // 使用非线性映射: 中央区域 (±30音分) 占表盘 50% 宽度, 边缘压缩
+  const absCents = Math.abs(cents);
+  const sign = Math.sign(cents);
+
+  let normalized;
+  if (absCents <= 30) {
+    // 中央 ±30音分 → 映射到 25%~75% (占表盘 50%)
+    normalized = (cents / 30) * 0.25;
+  } else {
+    // 超出 30音分 → 压缩到边缘
+    const extra = Math.min(absCents - 30, 70); // 最高到 ±100
+    normalized = sign * (0.25 + (extra / 70) * 0.25);
+  }
+
+  let percent = (normalized + 0.5) * 100;
   percent = Math.max(0, Math.min(100, percent));
 
   needleEl.style.left = `${percent}%`;
 
-  // meterFill 从中间向左或向右覆盖
+  // meterFill 从中间向检测方向覆盖
   if (percent >= 50) {
     meterFillEl.style.left = '50%';
     meterFillEl.style.width = `${percent - 50}%`;
-    meterFillEl.style.transform = 'scaleX(1)';
   } else {
     meterFillEl.style.left = `${percent}%`;
     meterFillEl.style.width = `${50 - percent}%`;
-    meterFillEl.style.transform = 'scaleX(1)';
   }
 }
 
