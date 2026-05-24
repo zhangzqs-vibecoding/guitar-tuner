@@ -88,45 +88,28 @@ function drawSpectrum(freqData, rms) {
   spectrumCtx.fillStyle = '#0d1117';
   spectrumCtx.fillRect(0, 0, w, h);
 
-  const sampleRate = 44100;
-  const nyquist = sampleRate / 2;
+  const nyquist = 22050;
   const binCount = freqData.length;
   const active = rms > 0.002;
 
-  // 对数频率范围 50Hz ~ 4000Hz
-  const minFreq = 50;
-  const maxFreq = 4000;
-  const logMin = Math.log2(minFreq);
-  const logMax = Math.log2(maxFreq);
-  const logRange = logMax - logMin;
+  // 吉他音域: 60Hz ~ 400Hz
+  const minFreq = 60;
+  const maxFreq = 400;
+  const minBin = Math.floor(minFreq / nyquist * binCount);
+  const maxBin = Math.floor(maxFreq / nyquist * binCount);
+  const visibleBins = maxBin - minBin;
+  const barWidth = Math.max(2, w / visibleBins);
 
-  // 为每个像素列计算对应的频率和 bin，取该 bin 附近的最大值
-  const binsPerPixel = [];
-  for (let px = 0; px < w; px++) {
-    const t = px / w;
-    const freq = minFreq * Math.pow(2, t * logRange);
-    const binCenter = (freq / nyquist) * binCount;
-    const binWidth = Math.max(1, binCenter * 0.05); // bin 宽度随频率增大
-    const binStart = Math.max(0, Math.floor(binCenter - binWidth / 2));
-    const binEnd = Math.min(binCount - 1, Math.ceil(binCenter + binWidth / 2));
-
-    let maxVal = 0;
-    for (let b = binStart; b <= binEnd; b++) {
-      if (freqData[b] > maxVal) maxVal = freqData[b];
-    }
-    binsPerPixel.push({ x: px, maxVal: maxVal / 255, freq: freq });
-  }
-
-  // 绘制柱状图
-  for (let i = 0; i < binsPerPixel.length; i++) {
-    const { x, maxVal } = binsPerPixel[i];
-    const barHeight = maxVal * h;
-    const hue = 200 - (i / binsPerPixel.length) * 160;
+  for (let i = 0; i < visibleBins; i++) {
+    const value = freqData[minBin + i] / 255;
+    const barHeight = value * h;
+    const x = (i / visibleBins) * w;
+    const hue = 200 - (i / visibleBins) * 160;
     const sat = active ? '80%' : '30%';
     const light = active ? '55%' : '25%';
 
     spectrumCtx.fillStyle = `hsl(${hue}, ${sat}, ${light})`;
-    spectrumCtx.fillRect(x, h - barHeight, 2, barHeight);
+    spectrumCtx.fillRect(x, h - barHeight, Math.max(barWidth - 1, 1), barHeight);
   }
 
   // 当前调弦模式 6 根弦的频率标记
@@ -134,10 +117,9 @@ function drawSpectrum(freqData, rms) {
   const markFreqs = tuning.strings.map(s => s.freq);
 
   markFreqs.forEach((f) => {
-    const t = (Math.log2(f) - logMin) / logRange;
-    const x = t * w;
+    const x = ((f - minFreq) / (maxFreq - minFreq)) * w;
     if (x >= 0 && x <= w) {
-      spectrumCtx.strokeStyle = 'rgba(255,255,255,0.25)';
+      spectrumCtx.strokeStyle = 'rgba(255,255,255,0.3)';
       spectrumCtx.lineWidth = 1;
       spectrumCtx.setLineDash([3, 4]);
       spectrumCtx.beginPath();
@@ -146,9 +128,10 @@ function drawSpectrum(freqData, rms) {
       spectrumCtx.stroke();
       spectrumCtx.setLineDash([]);
 
-      spectrumCtx.fillStyle = 'rgba(255,255,255,0.5)';
+      spectrumCtx.fillStyle = 'rgba(255,255,255,0.6)';
       spectrumCtx.font = '10px monospace';
-      spectrumCtx.fillText(`${Math.round(f)}Hz`, x + 3, 14);
+      const label = f < 100 ? `${f.toFixed(0)}Hz` : `${f.toFixed(0)}Hz`;
+      spectrumCtx.fillText(label, x + 3, 14);
     }
   });
 }
