@@ -20,19 +20,31 @@ const tuningSelect = $('tuningMode');
 const stringSelectorEl = $('stringSelector');
 const waveformCanvas = $('waveform');
 const waveformCtx = waveformCanvas ? waveformCanvas.getContext('2d') : null;
+const spectrumCanvas = $('spectrum');
+const spectrumCtx = spectrumCanvas ? spectrumCanvas.getContext('2d') : null;
 const signalBar = $('signalBar');
 const autoToggle = $('autoToggle');
 
-// ---- 波形绘制 ----
-function resizeCanvas() {
-  if (!waveformCtx) return;
-  const rect = waveformCanvas.getBoundingClientRect();
+// ---- 画布尺寸调整 ----
+function resizeCanvases() {
   const dpr = window.devicePixelRatio || 1;
-  waveformCanvas.width = rect.width * dpr;
-  waveformCanvas.height = rect.height * dpr;
-  waveformCtx.scale(dpr, dpr);
+
+  if (waveformCtx) {
+    const rect = waveformCanvas.getBoundingClientRect();
+    waveformCanvas.width = rect.width * dpr;
+    waveformCanvas.height = rect.height * dpr;
+    waveformCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  if (spectrumCtx) {
+    const rect = spectrumCanvas.getBoundingClientRect();
+    spectrumCanvas.width = rect.width * dpr;
+    spectrumCanvas.height = rect.height * dpr;
+    spectrumCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
 }
 
+// ---- 波形绘制 ----
 function drawWaveform(buffer, rms) {
   if (!waveformCtx) return;
   const w = waveformCanvas.getBoundingClientRect().width;
@@ -64,21 +76,68 @@ function drawWaveform(buffer, rms) {
   }
   waveformCtx.stroke();
   waveformCtx.shadowBlur = 0;
+}
 
-  if (signalBar) {
-    const level = Math.min(rms * 200, 100);
-    signalBar.style.width = `${level}%`;
-    signalBar.classList.remove('active', 'strong');
-    if (level > 10) signalBar.classList.add('active');
-    if (level > 70) signalBar.classList.add('strong');
+// ---- 频谱绘制 ----
+function drawSpectrum(freqData, rms) {
+  if (!spectrumCtx) return;
+  const w = spectrumCanvas.getBoundingClientRect().width;
+  const h = spectrumCanvas.getBoundingClientRect().height;
+
+  spectrumCtx.clearRect(0, 0, w, h);
+  spectrumCtx.fillStyle = '#0d1117';
+  spectrumCtx.fillRect(0, 0, w, h);
+
+  // 只绘制 0~2000Hz 范围（约前 93 个 bin，2048 FFT @ 44100Hz）
+  const maxBins = Math.min(Math.floor(freqData.length * (2000 / 22050)), freqData.length);
+  const barWidth = w / maxBins;
+  const active = rms > 0.002;
+
+  for (let i = 0; i < maxBins; i++) {
+    const value = freqData[i] / 255;
+    const barHeight = value * h;
+    const x = i * barWidth;
+    const xMid = x + barWidth / 2;
+
+    // 颜色渐变：低频暖色 → 中频亮色 → 高频冷色
+    const hue = 200 - (i / maxBins) * 160; // 蓝(200) → 红(40)
+    const sat = active ? '80%' : '30%';
+    const light = active ? '55%' : '25%';
+
+    spectrumCtx.fillStyle = `hsl(${hue}, ${sat}, ${light})`;
+    spectrumCtx.fillRect(x, h - barHeight, Math.max(barWidth - 1, 1), barHeight);
   }
+
+  // 吉他和弦频率标记
+  const markFreqs = [82, 110, 147, 196, 247, 330]; // E2 A2 D3 G3 B3 E4
+  spectrumCtx.fillStyle = 'rgba(255,255,255,0.15)';
+  spectrumCtx.font = '9px monospace';
+  markFreqs.forEach((f) => {
+    const bin = f / 22050 * freqData.length;
+    if (bin < maxBins) {
+      const x = bin * barWidth;
+      spectrumCtx.fillRect(x, 0, 1, h);
+      spectrumCtx.fillText(`${f}Hz`, x + 3, 12);
+    }
+  });
+}
+
+function updateSignalBar(rms) {
+  if (!signalBar) return;
+  const level = Math.min(rms * 200, 100);
+  signalBar.style.width = `${level}%`;
+  signalBar.classList.remove('active', 'strong');
+  if (level > 10) signalBar.classList.add('active');
+  if (level > 70) signalBar.classList.add('strong');
 }
 
 // ---- 音高检测回调 ----
 GuitarTuner.onPitchDetected = (result) => {
-  const { buffer, rms, frequency, detectedNote } = result;
+  const { buffer, freqData, rms, frequency, detectedNote } = result;
 
   drawWaveform(buffer, rms);
+  drawSpectrum(freqData, rms);
+  updateSignalBar(rms);
 
   if (frequency > 0 && detectedNote) {
     const tuning = TUNINGS[currentTuning];
@@ -144,8 +203,8 @@ function init() {
     setAutoMode(false);
   }
 
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+  resizeCanvases();
+  window.addEventListener('resize', resizeCanvases);
 
   tuningSelect.addEventListener('change', (e) => {
     currentTuning = e.target.value;

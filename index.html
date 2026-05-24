@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>吉他调音器 - Guitar Tuner</title>
-  <link rel="stylesheet" href="css/style.css?v=1.4.0">
+  <link rel="stylesheet" href="css/style.css?v=1.5.0">
 </head>
 <body>
   <div class="container">
@@ -44,9 +44,16 @@
     <!-- 波形显示 -->
     <div class="waveform-container">
       <canvas id="waveform" class="waveform-canvas"></canvas>
-      <div class="signal-meter">
-        <div class="signal-bar" id="signalBar"></div>
-      </div>
+    </div>
+
+    <!-- 频谱显示 -->
+    <div class="spectrum-container">
+      <canvas id="spectrum" class="spectrum-canvas"></canvas>
+    </div>
+
+    <!-- 信号强度 -->
+    <div class="signal-meter">
+      <div class="signal-bar" id="signalBar"></div>
     </div>
 
     <!-- 音高指示表盘 -->
@@ -90,11 +97,11 @@
     </button>
 
     <!-- 版本号 -->
-    <div class="version">v1.4.0</div>
+    <div class="version">v1.5.0</div>
   </div>
 
-  <script src="js/tunings.js?v=1.4.0"></script>
-  <script src="js/tuner.js?v=1.4.0"></script>
-  <script src="js/app.js?v=1.4.0"></script>
+  <script src="js/tunings.js?v=1.5.0"></script>
+  <script src="js/tuner.js?v=1.5.0"></script>
+  <script src="js/app.js?v=1.5.0"></script>
 </body>
 </html>

@@ -58,6 +58,9 @@ const GuitarTuner = {
     const buffer = new Float32Array(this.analyser.fftSize);
     this.analyser.getFloatTimeDomainData(buffer);
 
+    const freqData = new Uint8Array(this.analyser.frequencyBinCount);
+    this.analyser.getByteFrequencyData(freqData);
+
     // 计算 RMS 信号强度
     let rms = 0;
     for (let i = 0; i < buffer.length; i++) {
@@ -91,6 +94,7 @@ const GuitarTuner = {
     if (this.onPitchDetected) {
       this.onPitchDetected({
         buffer: buffer,
+        freqData: freqData,
         rms: rms,
         frequency: freq,
         detectedNote: note,
