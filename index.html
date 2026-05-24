@@ -33,6 +33,14 @@
       <!-- 动态生成 -->
     </div>
 
+    <!-- Auto 模式切换 -->
+    <div class="auto-toggle-row">
+      <button class="auto-toggle" id="autoToggle" onclick="toggleAutoMode()">
+        <span class="auto-icon">⟳</span>
+        <span>Auto 自动识别</span>
+      </button>
+    </div>
+
     <!-- 波形显示 -->
     <div class="waveform-container">
       <canvas id="waveform" class="waveform-canvas"></canvas>
@@ -82,7 +90,7 @@
     </button>
 
     <!-- 版本号 -->
-    <div class="version">v1.2.0</div>
+    <div class="version">v1.3.0</div>
   </div>
 
   <script src="js/tunings.js"></script>

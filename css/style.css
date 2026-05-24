@@ -154,6 +154,52 @@ body {
   background: rgba(6, 214, 160, 0.1);
 }
 
+/* Auto 模式切换 */
+.auto-toggle-row {
+  display: flex;
+  justify-content: center;
+}
+
+.auto-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface-light);
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.auto-toggle:hover {
+  border-color: var(--primary);
+  color: var(--text);
+}
+
+.auto-toggle.active {
+  border-color: var(--success);
+  color: var(--success);
+  background: rgba(6, 214, 160, 0.1);
+}
+
+.auto-icon {
+  font-size: 16px;
+  display: inline-block;
+}
+
+.auto-toggle.active .auto-icon {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* 波形显示 */
 .waveform-container {
   background: #0d1117;

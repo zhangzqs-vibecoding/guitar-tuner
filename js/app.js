@@ -74,6 +74,9 @@ function drawWaveform(buffer, rms) {
   if (level > 70) signalBar.classList.add('strong');
 }
 
+let autoMode = false;
+let autoCooldown = 0;
+
 // ---- 音高检测回调 ----
 GuitarTuner.onPitchDetected = (result) => {
   const { buffer, rms, frequency, detectedNote } = result;
@@ -83,8 +86,30 @@ GuitarTuner.onPitchDetected = (result) => {
 
   if (frequency > 0 && detectedNote) {
     const tuning = TUNINGS[currentTuning];
-    const targetString = tuning.strings[activeStringIndex];
 
+    // Auto 模式：自动切换到最接近的琴弦
+    if (autoMode && autoCooldown <= 0) {
+      let bestIndex = 0;
+      let bestCents = Infinity;
+      tuning.strings.forEach((s, i) => {
+        const diff = Math.abs(getCentsDifference(frequency, s.freq));
+        if (diff < bestCents) {
+          bestCents = diff;
+          bestIndex = i;
+        }
+      });
+
+      // 只在与目标弦偏差在 ±150 音分内时才自动切换
+      if (bestCents < 150 && bestIndex !== activeStringIndex) {
+        activeStringIndex = bestIndex;
+        autoCooldown = 10; // 冷却 10 帧，避免频繁跳变
+        renderStringButtons();
+      }
+    }
+
+    if (autoCooldown > 0) autoCooldown--;
+
+    const targetString = tuning.strings[activeStringIndex];
     if (targetString) {
       const cents = getCentsDifference(frequency, targetString.freq);
       lastCents = cents;
@@ -98,6 +123,16 @@ GuitarTuner.onPitchDetected = (result) => {
       updateFrequency(frequency);
       updateStringButtons(cents);
     }
+  }
+};
+
+window.toggleAutoMode = function () {
+  autoMode = !autoMode;
+  const btn = document.getElementById('autoToggle');
+  if (autoMode) {
+    btn.classList.add('active');
+  } else {
+    btn.classList.remove('active');
   }
 };
 
