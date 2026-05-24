@@ -154,6 +154,45 @@ body {
   background: rgba(6, 214, 160, 0.1);
 }
 
+/* 波形显示 */
+.waveform-container {
+  background: #0d1117;
+  border-radius: var(--radius);
+  padding: 8px;
+  border: 1px solid var(--border);
+}
+
+.waveform-canvas {
+  display: block;
+  width: 100%;
+  height: 80px;
+  border-radius: 6px;
+}
+
+.signal-meter {
+  height: 4px;
+  background: #1a1a2e;
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.signal-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  background: var(--text-secondary);
+  transition: width 0.1s ease-out, background 0.3s;
+}
+
+.signal-bar.active {
+  background: var(--success);
+}
+
+.signal-bar.strong {
+  background: var(--warning);
+}
+
 /* 表盘区域 */
 .meter-container {
   background: var(--surface-light);

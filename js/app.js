@@ -4,28 +4,6 @@ let currentTuning = 'standard';
 let activeStringIndex = 0; // 0-5, 对应 6弦到 1弦
 let lastCents = 0;
 
-// 音高检测回调
-GuitarTuner.onPitchDetected = (result) => {
-  const { frequency, detectedNote } = result;
-  const tuning = TUNINGS[currentTuning];
-  const targetString = tuning.strings[activeStringIndex];
-
-  if (detectedNote && targetString) {
-    const cents = getCentsDifference(frequency, targetString.freq);
-    lastCents = cents;
-
-    // 判断是否接近目标音符（在 ±50 音分内视为匹配）
-    const semitonesFromTarget = 1200 * Math.log2(frequency / targetString.freq);
-    const isNearTarget = Math.abs(semitonesFromTarget) < 60;
-    const displayNote = isNearTarget ? targetString.note : detectedNote.name;
-
-    updateNoteDisplay(displayNote, cents, isNearTarget);
-    updateMeter(cents);
-    updateFrequency(frequency);
-    updateStringButtons(cents);
-  }
-};
-
 // ---- DOM 元素 ----
 const noteNameEl = document.getElementById('noteName');
 const noteCentsEl = document.getElementById('noteCents');
@@ -37,9 +15,97 @@ const statusDotEl = document.querySelector('.status-dot');
 const startBtn = document.getElementById('startBtn');
 const tuningSelect = document.getElementById('tuningMode');
 const stringSelectorEl = document.getElementById('stringSelector');
+const waveformCanvas = document.getElementById('waveform');
+const waveformCtx = waveformCanvas.getContext('2d');
+const signalBar = document.getElementById('signalBar');
+
+// ---- 波形绘制 ----
+function resizeCanvas() {
+  const rect = waveformCanvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  waveformCanvas.width = rect.width * dpr;
+  waveformCanvas.height = rect.height * dpr;
+  waveformCtx.scale(dpr, dpr);
+}
+
+function drawWaveform(buffer, rms) {
+  const w = waveformCanvas.getBoundingClientRect().width;
+  const h = waveformCanvas.getBoundingClientRect().height;
+
+  waveformCtx.clearRect(0, 0, w, h);
+
+  // 背景
+  waveformCtx.fillStyle = '#0d1117';
+  waveformCtx.fillRect(0, 0, w, h);
+
+  // 中线
+  waveformCtx.strokeStyle = 'rgba(255,255,255,0.06)';
+  waveformCtx.lineWidth = 1;
+  waveformCtx.beginPath();
+  waveformCtx.moveTo(0, h / 2);
+  waveformCtx.lineTo(w, h / 2);
+  waveformCtx.stroke();
+
+  // 波形
+  const step = Math.max(1, Math.floor(buffer.length / w));
+  waveformCtx.beginPath();
+  waveformCtx.strokeStyle = rms > 0.002 ? '#4cc9f0' : 'rgba(76, 201, 240, 0.3)';
+  waveformCtx.lineWidth = 1.5;
+  waveformCtx.shadowBlur = rms > 0.002 ? 4 : 0;
+  waveformCtx.shadowColor = '#4cc9f0';
+
+  for (let x = 0; x < w; x++) {
+    const i = Math.floor(x * step);
+    const y = (buffer[i] * h / 2) + h / 2;
+    if (x === 0) {
+      waveformCtx.moveTo(x, y);
+    } else {
+      waveformCtx.lineTo(x, y);
+    }
+  }
+  waveformCtx.stroke();
+  waveformCtx.shadowBlur = 0;
+
+  // RMS 信号强度条
+  const level = Math.min(rms * 200, 100); // rms 0.005 约为满格
+  signalBar.style.width = `${level}%`;
+  signalBar.classList.remove('active', 'strong');
+  if (level > 10) signalBar.classList.add('active');
+  if (level > 70) signalBar.classList.add('strong');
+}
+
+// ---- 音高检测回调 ----
+GuitarTuner.onPitchDetected = (result) => {
+  const { buffer, rms, frequency, detectedNote } = result;
+
+  // 始终绘制波形
+  drawWaveform(buffer, rms);
+
+  if (frequency > 0 && detectedNote) {
+    const tuning = TUNINGS[currentTuning];
+    const targetString = tuning.strings[activeStringIndex];
+
+    if (targetString) {
+      const cents = getCentsDifference(frequency, targetString.freq);
+      lastCents = cents;
+
+      const semitonesFromTarget = 1200 * Math.log2(frequency / targetString.freq);
+      const isNearTarget = Math.abs(semitonesFromTarget) < 60;
+      const displayNote = isNearTarget ? targetString.note : detectedNote.name;
+
+      updateNoteDisplay(displayNote, cents, isNearTarget);
+      updateMeter(cents);
+      updateFrequency(frequency);
+      updateStringButtons(cents);
+    }
+  }
+};
 
 // ---- 初始化 ----
 function init() {
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
   tuningSelect.addEventListener('change', (e) => {
     currentTuning = e.target.value;
     renderStringButtons();
@@ -75,7 +141,6 @@ function renderStringButtons() {
     btn.addEventListener('click', () => {
       activeStringIndex = i;
       renderStringButtons();
-      // 重置显示
       updateNoteDisplay('--', 0, false);
       updateMeter(0);
       updateFrequency(null);
@@ -91,7 +156,6 @@ function updateNoteDisplay(note, cents, isNearTarget) {
   const absCents = Math.abs(cents);
   noteCentsEl.textContent = `${cents > 0 ? '+' : ''}${cents.toFixed(1)} ¢`;
 
-  // 清除旧状态
   noteNameEl.classList.remove('tuned');
   noteCentsEl.classList.remove('tuned');
 
@@ -102,17 +166,14 @@ function updateNoteDisplay(note, cents, isNearTarget) {
 }
 
 function updateMeter(cents) {
-  // 使用非线性映射: 中央区域 (±30音分) 占表盘 50% 宽度, 边缘压缩
   const absCents = Math.abs(cents);
   const sign = Math.sign(cents);
 
   let normalized;
   if (absCents <= 30) {
-    // 中央 ±30音分 → 映射到 25%~75% (占表盘 50%)
     normalized = (cents / 30) * 0.25;
   } else {
-    // 超出 30音分 → 压缩到边缘
-    const extra = Math.min(absCents - 30, 70); // 最高到 ±100
+    const extra = Math.min(absCents - 30, 70);
     normalized = sign * (0.25 + (extra / 70) * 0.25);
   }
 
@@ -121,7 +182,6 @@ function updateMeter(cents) {
 
   needleEl.style.left = `${percent}%`;
 
-  // meterFill 从中间向检测方向覆盖
   if (percent >= 50) {
     meterFillEl.style.left = '50%';
     meterFillEl.style.width = `${percent - 50}%`;
@@ -141,9 +201,7 @@ function updateFrequency(freq) {
 
 function updateStringButtons(cents) {
   const buttons = stringSelectorEl.querySelectorAll('.string-btn');
-  buttons.forEach((btn, i) => {
-    btn.classList.remove('in-tune');
-  });
+  buttons.forEach((btn) => btn.classList.remove('in-tune'));
 
   const absCents = Math.abs(cents);
   if (absCents < 3) {
@@ -195,7 +253,6 @@ window.startTuner = async function () {
   startBtn.disabled = false;
 };
 
-// 键盘快捷键提示
 console.log('吉他调音器已就绪 | 按空格键切换琴弦');
 
 init();

@@ -58,53 +58,60 @@ const GuitarTuner = {
     const buffer = new Float32Array(this.analyser.fftSize);
     this.analyser.getFloatTimeDomainData(buffer);
 
-    const freq = this._detectPitch(buffer, this.audioContext.sampleRate);
+    // 计算 RMS 信号强度
+    let rms = 0;
+    for (let i = 0; i < buffer.length; i++) {
+      rms += buffer[i] * buffer[i];
+    }
+    rms = Math.sqrt(rms / buffer.length);
 
-    if (freq > 0) {
-      this.freqHistory.push(freq);
-      if (this.freqHistory.length > 5) this.freqHistory.shift();
+    let freq = -1;
+    let note = null;
 
-      if (this.freqHistory.length >= 3 && this.onPitchDetected) {
-        const sorted = [...this.freqHistory].sort((a, b) => a - b);
-        const medianFreq = sorted[Math.floor(sorted.length / 2)];
+    if (rms >= 0.002) {
+      freq = this._detectPitch(buffer, this.audioContext.sampleRate, rms);
 
-        const note = getNoteFromFrequency(medianFreq);
-        this.onPitchDetected({
-          frequency: medianFreq,
-          detectedNote: note,
-        });
+      if (freq > 0) {
+        this.freqHistory.push(freq);
+        if (this.freqHistory.length > 5) this.freqHistory.shift();
+
+        if (this.freqHistory.length >= 3) {
+          const sorted = [...this.freqHistory].sort((a, b) => a - b);
+          const medianFreq = sorted[Math.floor(sorted.length / 2)];
+          note = getNoteFromFrequency(medianFreq);
+          freq = medianFreq;
+        }
+      } else {
+        if (this.freqHistory.length > 0) this.freqHistory.shift();
       }
     } else {
-      // 信号丢失时逐渐衰减历史
-      if (this.freqHistory.length > 0) {
-        this.freqHistory.shift();
-      }
+      this.freqHistory = [];
+    }
+
+    if (this.onPitchDetected) {
+      this.onPitchDetected({
+        buffer: buffer,
+        rms: rms,
+        frequency: freq,
+        detectedNote: note,
+      });
     }
 
     this.animationId = requestAnimationFrame(() => this._loop());
   },
 
   // 改进的自相关音高检测
-  _detectPitch(buffer, sampleRate) {
+  _detectPitch(buffer, sampleRate, rms) {
     const n = buffer.length;
 
-    // 1. 去除直流分量
+    // 去除直流分量
     let sum = 0;
     for (let i = 0; i < n; i++) sum += buffer[i];
     const mean = sum / n;
 
-    // 2. 计算 RMS 判断信号强度
-    let rms = 0;
-    for (let i = 0; i < n; i++) {
-      const v = buffer[i] - mean;
-      rms += v * v;
-    }
-    rms = Math.sqrt(rms / n);
-    if (rms < 0.002) return -1;
-
-    // 3. 归一化自相关
-    const minLag = Math.floor(sampleRate / 500);   // 最高频率 500Hz
-    const maxLag = Math.floor(sampleRate / 55);    // 最低频率 55Hz
+    // 归一化自相关
+    const minLag = Math.floor(sampleRate / 500);
+    const maxLag = Math.floor(sampleRate / 55);
 
     let bestLag = -1;
     let bestCorr = 0;
@@ -131,7 +138,7 @@ const GuitarTuner = {
 
     if (bestCorr < 0.3 || bestLag <= 0) return -1;
 
-    // 4. 抛物线插值提高精度
+    // 抛物线插值提高精度
     let shift = 0;
     if (bestLag > minLag && bestLag < maxLag) {
       const c0 = this._normCorrAt(buffer, mean, bestLag - 1);
