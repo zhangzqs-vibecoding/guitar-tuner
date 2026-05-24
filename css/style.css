@@ -319,6 +319,15 @@ body {
   color: white;
 }
 
+/* 版本号 */
+.version {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
+
 /* 响应式设计 */
 
 /* 移动端优化 */
