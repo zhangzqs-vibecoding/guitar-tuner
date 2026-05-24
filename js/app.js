@@ -92,9 +92,9 @@ function drawSpectrum(freqData, rms) {
   const binCount = freqData.length;
   const active = rms > 0.002;
 
-  // 吉他音域: 60Hz ~ 400Hz
-  const minFreq = 60;
-  const maxFreq = 400;
+  // 吉他全音域: E2(82Hz) ~ D6(1175Hz)，含余量
+  const minFreq = 70;
+  const maxFreq = 1200;
   const minBin = Math.floor(minFreq / nyquist * binCount);
   const maxBin = Math.floor(maxFreq / nyquist * binCount);
   const visibleBins = maxBin - minBin;
