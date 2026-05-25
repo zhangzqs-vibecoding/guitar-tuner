@@ -6,127 +6,93 @@
 <title>吉他调音器理论基础</title>
 <style>
   :root {
-    --bg: #1a1a2e;
-    --surface: #16213e;
-    --primary: #4cc9f0;
-    --success: #06d6a0;
-    --warning: #ffd166;
-    --danger: #ef476f;
-    --text: #e0e0e0;
-    --text-secondary: #a0a0b8;
-    --radius: 12px;
+    --bg: #1a1a2e; --surface: #16213e; --primary: #4cc9f0;
+    --success: #06d6a0; --warning: #ffd166; --danger: #ef476f;
+    --text: #e0e0e0; --text2: #a0a0b8; --radius: 12px;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin:0; padding:0; box-sizing:border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.8;
-    padding: 20px;
+    background: var(--bg); color: var(--text); line-height: 1.8; padding: 20px;
   }
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: var(--surface);
-    border-radius: 20px;
-    padding: 40px 36px;
-  }
-  h1 {
-    text-align: center;
-    color: var(--primary);
-    font-size: 28px;
-    margin-bottom: 8px;
-  }
-  .subtitle {
-    text-align: center;
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin-bottom: 32px;
-  }
+  .container { max-width: 820px; margin:0 auto; background: var(--surface); border-radius:20px; padding:40px 36px; }
+  h1 { text-align:center; color:var(--primary); font-size:28px; margin-bottom:8px; }
+  .subtitle { text-align:center; color:var(--text2); font-size:14px; margin-bottom:32px; }
   h2 {
-    color: var(--primary);
-    font-size: 22px;
-    margin: 40px 0 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: var(--primary); font-size: 22px; margin: 48px 0 18px;
+    padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-  h3 {
-    color: var(--warning);
-    font-size: 17px;
-    margin: 24px 0 10px;
-  }
-  p { margin: 10px 0; color: var(--text-secondary); }
+  h3 { color: var(--warning); font-size: 17px; margin: 28px 0 12px; }
+  p { margin: 12px 0; color: var(--text2); }
+  p strong { color: var(--text); }
+
   .highlight {
-    background: rgba(76, 201, 240, 0.1);
-    border-left: 3px solid var(--primary);
-    padding: 12px 16px;
-    border-radius: 0 var(--radius) var(--radius) 0;
-    margin: 16px 0;
+    background: rgba(76,201,240,0.08); border-left: 3px solid var(--primary);
+    padding: 14px 18px; border-radius: 0 var(--radius) var(--radius) 0; margin: 18px 0;
   }
   .highlight p { color: var(--text); }
+
   .formula {
-    background: #0d1117;
-    padding: 16px 20px;
-    border-radius: var(--radius);
-    margin: 12px 0;
-    font-family: 'Courier New', monospace;
-    font-size: 15px;
-    color: var(--success);
-    text-align: center;
-    overflow-x: auto;
+    background: #0d1117; padding: 16px 20px; border-radius: var(--radius);
+    margin: 14px 0; font-family: 'Courier New', monospace; font-size:15px;
+    color: var(--success); text-align: center; overflow-x: auto;
   }
+
   .note-box {
-    background: rgba(255, 209, 102, 0.08);
-    border: 1px solid rgba(255, 209, 102, 0.2);
-    border-radius: var(--radius);
-    padding: 14px 18px;
-    margin: 12px 0;
+    background: rgba(255,209,102,0.06); border:1px solid rgba(255,209,102,0.15);
+    border-radius:var(--radius); padding:14px 18px; margin:14px 0;
   }
   .note-box p { color: #e8c860; }
-  svg { display: block; margin: 16px auto; max-width: 100%; }
-  .back-link {
-    display: inline-block;
-    margin-top: 32px;
-    padding: 10px 20px;
-    background: var(--primary);
-    color: #1a1a2e;
-    border-radius: 20px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
+
+  canvas { display:block; margin:16px auto; border-radius:8px; background:#0d1117; max-width:100%; }
+
+  .demo-box {
+    background: #0d1117; border-radius: var(--radius); padding: 20px;
+    margin: 18px 0; border: 1px solid rgba(255,255,255,0.05);
   }
-  .back-link:hover { opacity: 0.85; }
-  .toc { margin: 24px 0; }
-  .toc a { color: var(--primary); text-decoration: none; }
-  .toc a:hover { text-decoration: underline; }
-  .toc li { margin: 4px 0; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 16px 0;
-    font-size: 14px;
+  .demo-box h4 { color: var(--primary); font-size: 15px; margin-bottom: 12px; }
+  .demo-box label { color: var(--text2); font-size: 13px; display: block; margin: 8px 0 4px; }
+  .demo-box input[type=range] { width: 100%; accent-color: var(--primary); }
+  .demo-box .controls { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+  .demo-box .controls button {
+    padding: 6px 14px; border: 1px solid var(--primary); border-radius: 16px;
+    background: transparent; color: var(--primary); cursor: pointer;
+    font-size: 13px; transition: all 0.2s;
   }
-  th, td {
-    padding: 10px 14px;
-    text-align: center;
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-  th { background: rgba(255,255,255,0.05); color: var(--text); }
-  td { color: var(--text-secondary); }
-  .step { display: flex; gap: 12px; align-items: flex-start; margin: 12px 0; }
+  .demo-box .controls button:hover { background: rgba(76,201,240,0.15); }
+  .demo-box .controls button.active { background: var(--primary); color: #1a1a2e; }
+
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+  th, td { padding:10px 14px; text-align:center; border:1px solid rgba(255,255,255,0.06); }
+  th { background:rgba(255,255,255,0.04); color:var(--text); }
+  td { color:var(--text2); }
+
+  .step { display:flex; gap:12px; align-items:flex-start; margin:14px 0; }
   .step-num {
-    width: 32px; height: 32px;
-    background: var(--primary);
-    color: #1a1a2e;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 14px; flex-shrink: 0;
+    width:30px; height:30px; background:var(--primary); color:#1a1a2e;
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:14px; flex-shrink:0;
   }
-  .step p { margin: 0; padding-top: 4px; }
-  @media (max-width: 600px) {
-    .container { padding: 24px 16px; }
-    h1 { font-size: 22px; }
-    h2 { font-size: 18px; }
+  .step p { margin:0; padding-top:3px; }
+  .step .step-body { flex:1; }
+
+  .back-link {
+    display:inline-block; margin-top:32px; padding:10px 20px;
+    background:var(--primary); color:#1a1a2e; border-radius:20px;
+    text-decoration:none; font-weight:600; font-size:14px;
+  }
+  .back-link:hover { opacity:0.85; }
+
+  .toc { margin:24px 0; columns:2; }
+  .toc a { color:var(--primary); text-decoration:none; font-size:14px; }
+  .toc a:hover { text-decoration:underline; }
+  .toc li { margin:3px 0; break-inside:avoid; }
+  .freq-label { font-size:10px; fill: var(--text2); }
+
+  @media (max-width:600px) {
+    .container { padding:24px 16px; }
+    h1 { font-size:22px; } h2 { font-size:18px; }
+    .toc { columns:1; }
   }
 </style>
 </head>
@@ -134,371 +100,464 @@
 <div class="container">
 
 <h1>吉他调音器 — 理论基础</h1>
-<p class="subtitle">从高中数学出发，理解声音、频谱和音高检测</p>
+<p class="subtitle">从高中数学出发，借助交互式演示，理解声音、频谱和音高检测</p>
 
 <div class="toc">
-<strong>目录</strong>
 <ol>
-  <li><a href="#ch1">声音是什么</a></li>
-  <li><a href="#ch2">正弦波：声音的"原子"</a></li>
-  <li><a href="#ch3">频率与音高</a></li>
-  <li><a href="#ch4">泛音：一根弦为什么发出多个频率</a></li>
-  <li><a href="#ch5">时域与频域：两种看声音的方式</a></li>
-  <li><a href="#ch6">傅里叶变换：从时域到频域的桥梁</a></li>
-  <li><a href="#ch7">FFT：让计算机快速做傅里叶变换</a></li>
-  <li><a href="#ch8">自相关算法：另一种检测音高的方法</a></li>
-  <li><a href="#ch9">音分（Cents）：衡量音准的单位</a></li>
-  <li><a href="#ch10">调音器完整工作流程</a></li>
+  <li><a href="#ch1">1. 声音是什么</a></li>
+  <li><a href="#ch2">2. 正弦波：声音的"原子"</a></li>
+  <li><a href="#ch3">3. 频率与音高</a></li>
+  <li><a href="#ch4">4. 泛音：一根弦为什么发出多个频率</a></li>
+  <li><a href="#ch5">5. 时域与频域：两种看声音的方式</a></li>
+  <li><a href="#ch6">6. 傅里叶变换：从时域到频域的桥梁</a></li>
+  <li><a href="#ch7">7. FFT：快速傅里叶变换</a></li>
+  <li><a href="#ch8">8. 自相关算法：检测音高</a></li>
+  <li><a href="#ch9">9. 音分（Cents）</a></li>
+  <li><a href="#ch10">10. 调音器完整工作流程</a></li>
 </ol>
 </div>
 
-<!-- ======== 第1章 ======== -->
+<!-- ==================== 第1章 ==================== -->
 <h2 id="ch1">1. 声音是什么</h2>
+<p>声音的本质是<strong>空气的振动</strong>。物体振动→挤压空气→层层传递→到达耳朵→鼓膜振动→听到声音。</p>
+<p>下面这个交互式演示可以帮你直观理解：拖动滑块改变振动频率，观察波形的变化。</p>
 
-<p>声音的本质是<strong>空气的振动</strong>。</p>
+<div class="demo-box">
+  <h4>交互：改变频率观察波形</h4>
+  <label>频率: <span id="freqVal">110</span> Hz（A2 弦的标准音高）</label>
+  <input type="range" id="freqSlider" min="50" max="500" value="110" step="1">
+  <canvas id="waveDemo" width="740" height="130"></canvas>
+  <p style="font-size:12px;color:var(--text2);margin-top:8px">纵轴是气压偏差，横轴是时间。频率越高，曲线越密。</p>
+</div>
 
-<p>想象你用手拍一下桌子：桌面快速上下振动，挤压周围的空气分子。被挤压的空气分子又去挤压旁边的分子，像多米诺骨牌一样，一层层传开。当这串"挤压波"到达你的耳朵，鼓膜跟着振动，你就听到了声音。</p>
+<script>
+// === 正弦波演示 ===
+(function(){
+  const canvas = document.getElementById('waveDemo');
+  const ctx = canvas.getContext('2d');
+  const slider = document.getElementById('freqSlider');
+  const label = document.getElementById('freqVal');
+  let freq = 110;
+  let phase = 0;
+  let lastT = 0;
 
-<p>如果我们画一张图，横轴是时间，纵轴是空气压力相对于正常气压的偏差，会得到类似这样的波形：</p>
+  function draw(ts) {
+    const dt = lastT ? (ts - lastT) / 1000 : 0.016;
+    lastT = ts;
+    phase += 2 * Math.PI * freq * dt;
 
-<svg viewBox="0 0 700 160" width="700" height="160">
-  <rect width="700" height="160" fill="#0d1117" rx="8"/>
-  <line x1="40" y1="80" x2="660" y2="80" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-  <text x="30" y="80" fill="#a0a0b8" font-size="11" text-anchor="end">0</text>
-  <text x="40" y="16" fill="#a0a0b8" font-size="11">+ 气压 ↑</text>
-  <text x="40" y="150" fill="#a0a0b8" font-size="11">− 气压 ↓</text>
-  <text x="350" y="150" fill="#a0a0b8" font-size="12" text-anchor="middle">时间 →</text>
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
 
-  <!-- 画一个纯随机类噪声波形代表拍桌子 -->
-  <polyline fill="none" stroke="#4cc9f0" stroke-width="1.5" points="
-    60,80 65,60 70,95 75,50 80,100 85,55 90,90 95,65 100,105 105,45
-    110,85 115,70 120,95 125,40 130,110 135,60 140,80 145,50 150,100
-    155,75 160,90 165,45 170,85 175,55 180,95 185,70 190,105 195,50
-    200,88 205,65 210,92 215,48 220,100 225,58 230,85 235,72 240,95
-    245,42 250,98 255,62 260,90 265,55 270,80 275,68 280,100 285,50
-    290,92 295,60 300,88 305,75 310,95 315,45 320,85 325,65 330,100
-    335,52 340,90 345,70 350,85 355,55 360,95 365,60 370,88 375,48
-    380,80 385,65 390,92 395,50 400,98 405,62 410,85 415,70 420,95
-    425,45 430,90 435,55 440,100 445,68 450,82 455,50 460,92 465,72
-    470,88 475,58 480,95 485,60 490,85 495,52 500,90 505,65 510,100
-    515,48 520,88 525,70 530,82 535,55 540,95 545,62 550,90 555,45
-    560,85 565,50 570,92 575,68 580,80 585,55 590,98 595,60 600,88
-    605,72 610,95 615,48 620,85 625,52 630,90 635,65 640,80
-  "/>
+    // 网格
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < 6; i++) {
+      const y = 15 + i * 20;
+      ctx.beginPath(); ctx.moveTo(20, y); ctx.lineTo(w-20, y); ctx.stroke();
+    }
 
-  <text x="350" y="40" fill="#a0a0b8" font-size="12" text-anchor="middle">拍桌子的声音：杂乱、无规律</text>
-</svg>
+    // 波形
+    ctx.beginPath();
+    ctx.strokeStyle = '#4cc9f0';
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 6; ctx.shadowColor = '#4cc9f0';
+    for (let x = 20; x < w - 20; x++) {
+      const t = (x - 20) / (w - 40) * 0.05;
+      const y = h/2 - Math.sin(2 * Math.PI * freq * t + phase) * (h/2 - 20);
+      if (x === 20) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // 标注
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = '10px monospace';
+    ctx.fillText(`${freq} Hz`, w - 80, 22);
+
+    requestAnimationFrame(draw);
+  }
+
+  slider.addEventListener('input', () => {
+    freq = parseInt(slider.value);
+    label.textContent = freq;
+    if (freq === 82) label.textContent += ' (E2 最低弦)';
+    else if (freq === 110) label.textContent += ' (A2)';
+    else if (freq === 147) label.textContent += ' (D3)';
+    else if (freq === 196) label.textContent += ' (G3)';
+    else if (freq === 247) label.textContent += ' (B3)';
+    else if (freq === 330) label.textContent += ' (E4 最高弦)';
+  });
+
+  requestAnimationFrame(draw);
+})();
+</script>
 
 <div class="highlight">
-  <p><strong>关键概念：</strong>声音 = 空气压力的周期性（或非周期性）变化。如果变化有规律，听起来是乐音；如果杂乱无章，听起来是噪音。</p>
+  <p><strong>关键概念：</strong>振动有规律 → 乐音（能听出音高）。振动杂乱无章 → 噪音。吉他就是靠弦的有规律振动发出乐音。</p>
 </div>
 
-<!-- ======== 第2章 ======== -->
+<!-- ==================== 第2章 ==================== -->
 <h2 id="ch2">2. 正弦波：声音的"原子"</h2>
-
-<p>在所有波形中，<strong>正弦波</strong>是最简单、最基本的。它就是高中数学里的 y = A·sin(2πft)：</p>
-
+<p>所有波形中，<strong>正弦波</strong>是最简单、最基本的。它只包含<strong>一个单一频率</strong>——数学里 y = A·sin(2πft)：</p>
 <div class="formula">y(t) = A · sin(2π f t)</div>
-
-<p>其中：</p>
-<ul style="color: var(--text-secondary); margin-left: 20px;">
-  <li><strong>A</strong> — 振幅，决定声音<strong>有多响</strong>（波形的高度）</li>
-  <li><strong>f</strong> — 频率，决定声音<strong>有多高</strong>（每秒振动次数）</li>
-  <li><strong>t</strong> — 时间</li>
-</ul>
-
-<svg viewBox="0 0 700 160" width="700" height="160">
-  <rect width="700" height="160" fill="#0d1117" rx="8"/>
-  <line x1="40" y1="80" x2="660" y2="80" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-
-  <polyline fill="none" stroke="#06d6a0" stroke-width="2"
-    points="
-    60,80 67,45 74,80 81,115 88,80
-    95,45 102,80 109,115 116,80
-    123,45 130,80 137,115 144,80
-    151,45 158,80 165,115 172,80
-    179,45 186,80 193,115 200,80
-    207,45 214,80 221,115 228,80
-    235,45 242,80 249,115 256,80
-    263,45 270,80 277,115 284,80
-    291,45 298,80 305,115 312,80
-    319,45 326,80 333,115 340,80
-    347,45 354,80 361,115 368,80
-    375,45 382,80 389,115 396,80
-    403,45 410,80 417,115 424,80
-    431,45 438,80 445,115 452,80
-    459,45 466,80 473,115 480,80
-    487,45 494,80 501,115 508,80
-    515,45 522,80 529,115 536,80
-    543,45 550,80 557,115 564,80
-    571,45 578,80 585,115 592,80
-    599,45 606,80 613,115 620,80
-    627,45 634,80 641,115 648,80
-  "/>
-
-  <!-- 振幅标注 -->
-  <line x1="55" y1="45" x2="55" y2="115" stroke="#ffd166" stroke-width="1" stroke-dasharray="3,3"/>
-  <text x="45" y="82" fill="#ffd166" font-size="11" text-anchor="end">A</text>
-
-  <!-- 周期标注 -->
-  <line x1="123" y1="135" x2="151" y2="135" stroke="#ffd166" stroke-width="1"/>
-  <text x="137" y="148" fill="#ffd166" font-size="11" text-anchor="middle">T=1/f</text>
-
-  <text x="350" y="28" fill="#a0a0b8" font-size="12" text-anchor="middle">正弦波：最纯净的声音（听起来像"嘟——"）</text>
-</svg>
+<p>A = <strong>振幅</strong>（波有多高，决定响度），f = <strong>频率</strong>（每秒振动次数，决定音高）</p>
 
 <div class="note-box">
-  <p><strong>调音器里的"波形图"</strong>就是不断采集麦克风信号，画出每一瞬间的气压值。正弦波在上面看起来是一条光滑规律的曲线。</p>
+  <p>上面那个演示就是一个纯正弦波。如果你对着音箱播放正弦波，听到的会是"嘟——"这样单调的声音，没有任何音色变化。真实乐器的声音远比这个复杂。</p>
 </div>
 
-<!-- ======== 第3章 ======== -->
+<!-- ==================== 第3章 ==================== -->
 <h2 id="ch3">3. 频率与音高</h2>
-
-<p>频率 f 的单位是<strong>赫兹（Hz）</strong>，意思是"每秒振动多少次"。</p>
-
-<p>人类耳朵能听到约 20Hz ~ 20000Hz。吉他覆盖的范围大约是 80Hz ~ 1200Hz。</p>
-
-<p><strong>音名与频率的关系：</strong></p>
-<ul style="color: var(--text-secondary); margin-left: 20px;">
-  <li>A4（钢琴中央 A 上方的 A）= <strong>440Hz</strong>，国际标准音</li>
-  <li>频率翻倍 = 音高升高一个八度。比如 A5 = 880Hz</li>
-  <li>频率减半 = 音高降低一个八度。比如 A3 = 220Hz</li>
-  <li>一个八度分成 12 个半音，相邻半音的频率比是 2^(1/12) ≈ 1.05946</li>
-</ul>
+<p>频率的单位是<strong>赫兹（Hz）</strong>= 每秒振动次数。</p>
 
 <table>
-  <tr><th>弦</th><th>音名</th><th>频率 (Hz)</th><th>说明</th></tr>
-  <tr><td>6弦</td><td>E2</td><td>82.41</td><td>最低音</td></tr>
-  <tr><td>5弦</td><td>A2</td><td>110.00</td><td></td></tr>
-  <tr><td>4弦</td><td>D3</td><td>146.83</td><td></td></tr>
-  <tr><td>3弦</td><td>G3</td><td>196.00</td><td></td></tr>
-  <tr><td>2弦</td><td>B3</td><td>246.94</td><td></td></tr>
-  <tr><td>1弦</td><td>E4</td><td>329.63</td><td>空弦最高音</td></tr>
+  <tr><th>弦</th><th>音名</th><th>频率</th><th>按第12品</th></tr>
+  <tr><td>⑥</td><td>E2</td><td>82.41 Hz</td><td>E3 (164.8 Hz)</td></tr>
+  <tr><td>⑤</td><td>A2</td><td>110.00 Hz</td><td>A3 (220.0 Hz)</td></tr>
+  <tr><td>④</td><td>D3</td><td>146.83 Hz</td><td>D4 (293.7 Hz)</td></tr>
+  <tr><td>③</td><td>G3</td><td>196.00 Hz</td><td>G4 (392.0 Hz)</td></tr>
+  <tr><td>②</td><td>B3</td><td>246.94 Hz</td><td>B4 (493.9 Hz)</td></tr>
+  <tr><td>①</td><td>E4</td><td>329.63 Hz</td><td>E5 (659.3 Hz)</td></tr>
 </table>
 
+<p><strong>频率翻倍 = 高八度。</strong>比如 A2=110Hz，A3=220Hz，A4=440Hz（国际标准音）。每升高一个八度，频率恰好翻倍。</p>
+<p><strong>一个八度 = 12 个半音。</strong>相邻半音的频率比为 ¹²√2 ≈ 1.05946。这是"十二平均律"。吉他每品就是半音。</p>
+
 <div class="formula">
-  频率 → 音名公式：<br>
-  n = 69 + 12 · log<sub>2</sub>(f / 440)<br>
+  任意音名 → 对应的频率：<br>
+  f = 440 · 2<sup>(n − 69) / 12</sup><br>
   （n 是 MIDI 编号，69 = A4）
 </div>
 
-<div class="highlight">
-  <p><strong>调音器的目标：</strong>检测你拨弦后麦克风收到的频率，和目标频率比较，告诉你偏高还是偏低。</p>
-</div>
-
-<!-- ======== 第4章 ======== -->
+<!-- ==================== 第4章 ==================== -->
 <h2 id="ch4">4. 泛音：一根弦为什么发出多个频率</h2>
+<p>真实琴弦不只以全弦长振动，还<strong>同时</strong>以 1/2、1/3、1/4……弦长各自振动：</p>
 
-<p>真实的乐器<strong>不会</strong>只发出一个纯正弦波。拨动一根吉他弦时，整根弦在振动，弦的一半也在振动，弦的 1/3 也在振动…… 同时发生：</p>
+<div class="demo-box">
+  <h4>交互：把正弦波叠起来，看看复杂波形如何产生</h4>
+  <p style="font-size:13px;color:var(--text2)">点击按钮叠加不同的谐波分量，观察波形从纯净正弦变成复杂的"真实乐器"波形</p>
+  <div class="controls" id="harmonicBtns">
+    <button data-h="1" class="active">基频 f</button>
+    <button data-h="2">+ 2f (第2谐波)</button>
+    <button data-h="3">+ 3f (第3谐波)</button>
+    <button data-h="4">+ 4f</button>
+    <button data-h="5">+ 5f</button>
+    <button data-h="6">+ 6f</button>
+  </div>
+  <canvas id="harmonicDemo" width="740" height="180"></canvas>
+  <p id="harmonicNote" style="font-size:12px;color:var(--warning);margin-top:6px"></p>
+</div>
 
-<svg viewBox="0 0 700 220" width="700" height="220">
-  <rect width="700" height="220" fill="#0d1117" rx="8"/>
+<script>
+(function(){
+  const canvas = document.getElementById('harmonicDemo');
+  const ctx = canvas.getContext('2d');
+  const btns = document.getElementById('harmonicBtns');
+  const note = document.getElementById('harmonicNote');
+  let activeHarmonics = new Set([1]);
+  let phase = 0, lastT = 0;
+  const baseFreq = 110;
 
-  <!-- 基频 全弦长 -->
-  <text x="20" y="30" fill="#a0a0b8" font-size="11">全弦长振动</text>
-  <line x1="50" y1="45" x2="670" y2="45" stroke="#4cc9f0" stroke-width="2"/>
-  <path d="M 50,45 Q 180,15 360,45 Q 540,75 670,45" fill="none" stroke="#06d6a0" stroke-width="1.5"/>
-  <text x="675" y="30" fill="#06d6a0" font-size="11">f₁ = 基频</text>
+  btns.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const h = parseInt(btn.dataset.h);
+    if (activeHarmonics.has(h)) {
+      if (h !== 1) { activeHarmonics.delete(h); btn.classList.remove('active'); }
+    } else {
+      activeHarmonics.add(h); btn.classList.add('active');
+    }
+    if (activeHarmonics.size >= 3) note.textContent = '已经开始像真实吉他声了！泛音越多，波形越复杂，音色越丰富。';
+    else if (activeHarmonics.size >= 2) note.textContent = '加一个谐波，波形已经开始扭曲……';
+    else note.textContent = '纯净正弦波，只有一种频率。真实乐器不可能这样。';
+  });
 
-  <!-- 第2谐波 半弦长 -->
-  <text x="20" y="80" fill="#a0a0b8" font-size="11">1/2 弦长振动</text>
-  <line x1="50" y1="95" x2="360" y2="95" stroke="#4cc9f0" stroke-width="2"/>
-  <line x1="360" y1="95" x2="670" y2="95" stroke="#ef476f" stroke-width="2"/>
-  <path d="M 50,95 Q 127,70 205,95 Q 282,120 360,95" fill="none" stroke="#06d6a0" stroke-width="1.5"/>
-  <path d="M 360,95 Q 437,70 515,95 Q 592,120 670,95" fill="none" stroke="#ffd166" stroke-width="1.5"/>
-  <text x="675" y="80" fill="#ffd166" font-size="11">f₂ = 2 × 基频</text>
+  function amplitudes(h) {
+    const amps = {1:1.0, 2:0.5, 3:0.33, 4:0.2, 5:0.15, 6:0.1};
+    return amps[h] || 0;
+  }
 
-  <!-- 第3谐波 1/3弦长 -->
-  <text x="20" y="140" fill="#a0a0b8" font-size="11">1/3 弦长振动</text>
-  <line x1="50" y1="155" x2="256" y2="155" stroke="#4cc9f0" stroke-width="2"/>
-  <line x1="256" y1="155" x2="463" y2="155" stroke="#ef476f" stroke-width="2"/>
-  <line x1="463" y1="155" x2="670" y2="155" stroke="#a0a0b8" stroke-width="2"/>
-  <path d="M 50,155 Q 101,138 152,155 Q 203,172 256,155" fill="none" stroke="#06d6a0" stroke-width="1.5"/>
-  <path d="M 256,155 Q 308,138 360,155 Q 411,172 463,155" fill="none" stroke="#ffd166" stroke-width="1.5"/>
-  <path d="M 463,155 Q 515,138 567,155 Q 618,172 670,155" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-  <text x="675" y="140" fill="rgba(255,255,255,0.4)" font-size="11">f₃ = 3 × 基频</text>
+  function draw(ts) {
+    const dt = lastT ? Math.min((ts-lastT)/1000, 0.05) : 0.016;
+    lastT = ts;
+    phase += 2 * Math.PI * baseFreq * dt;
 
-  <!-- 底部说明 -->
-  <text x="350" y="200" fill="#a0a0b8" font-size="12" text-anchor="middle">
-    弦的不同部分同时以不同频率振动 → 产生多个频率分量（泛音列）
-  </text>
-</svg>
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const mid1 = h * 0.28;
+    const mid2 = h * 0.72;
+
+    // 中线
+    [mid1, mid2].forEach(my => {
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.beginPath(); ctx.moveTo(10, my); ctx.lineTo(w-10, my); ctx.stroke();
+    });
+
+    // 上半部分：各分量
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+    ctx.beginPath(); ctx.moveTo(10, mid1); ctx.lineTo(w-10, mid1); ctx.stroke();
+
+    const colors = ['#4cc9f0','#06d6a0','#ffd166','#ef476f','#c084fc','#fb923c'];
+    activeHarmonics.forEach(h => {
+      const amp = amplitudes(h);
+      ctx.beginPath();
+      ctx.strokeStyle = colors[(h-1)%6];
+      ctx.lineWidth = 1;
+      for (let x = 10; x < w-10; x++) {
+        const t = (x-10)/(w-20) * 0.04;
+        const y = mid1 - Math.sin(2*Math.PI*baseFreq*h*t + phase*h) * amp * (mid1-15);
+        if (x===10) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    });
+
+    // 下半部分：合成结果
+    ctx.beginPath();
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 8; ctx.shadowColor = '#ffffff';
+    for (let x = 10; x < w-10; x++) {
+      const t = (x-10)/(w-20) * 0.04;
+      let y = 0;
+      activeHarmonics.forEach(h => {
+        y += Math.sin(2*Math.PI*baseFreq*h*t + phase*h) * amplitudes(h);
+      });
+      y = mid2 - y * (mid2-30) / (1 + (activeHarmonics.size-1)*0.3);
+      if (x===10) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.font = '10px sans-serif';
+    ctx.fillText('各谐波分量', 16, 18);
+    ctx.fillText('合成后的波形（时域）', 16, h - 6);
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
 
 <div class="highlight">
-  <p><strong>基频</strong>（f₁）决定你听到的音高。<strong>泛音</strong>（f₂, f₃, f₄…）决定<strong>音色</strong>。</p>
-  <p>为什么吉他和钢琴弹同一个 A4，你能分辨出是谁？因为它们的泛音比例不同。泛音越丰富，音色越饱满。</p>
+  <p><strong>基频（f₁）</strong>决定你听到的音高。<strong>泛音（2f, 3f, 4f…）</strong>决定<strong>音色</strong>——为什么吉他和钢琴弹同一个音，你能分辨出来。</p>
+  <p>这就是你拨一根弦时，频谱图上会出现<strong>多个峰</strong>的原因：最低最强那个峰是基频，其他的是泛音。完全正常！</p>
 </div>
 
-<div class="note-box">
-  <p><strong>这就解释了你在频谱图上看到的现象：</strong>拨一根弦，出现好几个峰。最低最强那个是基频，其他是它的整数倍——泛音。这是完全正常的！</p>
-</div>
-
-<!-- ======== 第5章 ======== -->
+<!-- ==================== 第5章 ==================== -->
 <h2 id="ch5">5. 时域与频域：两种"看"声音的方式</h2>
 
-<p>回到波形图。如果拨响两根弦（比如拨一个 110Hz 的 A 弦和一个 147Hz 的 D 弦），麦克风收到的是<strong>两个频率的叠加</strong>：</p>
-
-<svg viewBox="0 0 700 180" width="700" height="180">
-  <rect width="700" height="180" fill="#0d1117" rx="8"/>
-  <text x="350" y="22" fill="#a0a0b8" font-size="12" text-anchor="middle">波形图（时域）：一团乱麻，根本看不清有几个频率</text>
-  <line x1="40" y1="100" x2="660" y2="100" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-  <!-- 110Hz+147Hz 混合波形 -->
-  <polyline fill="none" stroke="#4cc9f0" stroke-width="1.5" points="
-    60,100 64,80 68,115 72,65 76,120 80,55 84,108 88,62 92,125 96,50
-    100,95 104,72 108,130 112,45 116,105 120,58 124,118 128,68 132,90
-    136,75 140,128 144,52 148,98 152,70 156,122 160,60 164,112 168,48
-    172,100 176,78 180,95 184,55 188,125 192,65 196,108 200,50 204,115
-    208,72 212,90 216,58 220,128 224,45 228,105 232,62 236,120 240,70
-    244,98 248,50 252,118 256,68 260,110 264,55 268,95 272,75 276,130
-    280,42 284,100 288,65 292,125 296,52 300,108 304,72 308,90 312,48
-    316,120 320,60 324,112 328,50 332,105 336,78 340,95 344,55 348,128
-    352,68 356,100 360,45 364,118 368,70 372,85 376,52 380,122 384,62
-    388,110 392,48 396,115 400,72 404,90 408,55 412,125 416,65 420,108
-    424,50 428,100 432,78 436,95 440,58 444,120 448,68 452,85 456,42
-    460,110 464,62 468,128 472,50 476,105 480,75 484,90 488,55 492,122
-    496,65 500,112 504,45 508,100 512,70 516,118 520,58 524,95 528,72
-    532,108 536,48 540,120 544,62 548,100 552,52 556,115 560,68 564,90
-    568,55 572,125 576,45 580,105 584,70 588,98 592,50 596,118 600,60
-    604,110 608,48 612,95 616,75 620,108 624,52 628,100 632,65 636,92
-    640,55 644,120 648,68 652,85
-  "/>
-
-  <text x="350" y="155" fill="#a0a0b8" font-size="12" text-anchor="middle">
-    时域波形 = 所有频率成分混在一起的"大杂烩"
-  </text>
-</svg>
-
-<p style="margin-top: 20px;">如果有一种方法，能把这种"混在一起"的信号<strong>拆开</strong>，告诉你："这个声音里含有 110Hz 的成分，含 147Hz 的成分，含 220Hz 的成分……" —— 这就是<strong>频谱分析</strong>：</p>
-
-<svg viewBox="0 0 700 160" width="700" height="160">
-  <rect width="700" height="160" fill="#0d1117" rx="8"/>
-  <text x="350" y="22" fill="#a0a0b8" font-size="12" text-anchor="middle">频谱图（频域）：清清楚楚，每个频率成分一目了然</text>
-
-  <!-- 横轴 -->
-  <line x1="60" y1="130" x2="640" y2="130" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-  <text x="350" y="150" fill="#a0a0b8" font-size="11" text-anchor="middle">频率 (Hz) →</text>
-
-  <!-- 竖线标记 -->
-  <text x="90" y="142" fill="#a0a0b8" font-size="9" text-anchor="end">50</text>
-  <text x="190" y="142" fill="#a0a0b8" font-size="9" text-anchor="end">100</text>
-  <text x="290" y="142" fill="#a0a0b8" font-size="9" text-anchor="end">200</text>
-  <text x="490" y="142" fill="#a0a0b8" font-size="9" text-anchor="end">800</text>
-
-  <!-- 110Hz 峰 -->
-  <rect x="200" y="15" width="10" height="115" fill="#06d6a0" rx="2"/>
-  <text x="195" y="10" fill="#06d6a0" font-size="11">110Hz</text>
-
-  <!-- 147Hz 峰 -->
-  <rect x="258" y="30" width="10" height="100" fill="#ffd166" rx="2"/>
-  <text x="252" y="25" fill="#ffd166" font-size="11">147Hz</text>
-
-  <!-- 220Hz 峰 (泛音) -->
-  <rect x="340" y="55" width="10" height="75" fill="rgba(6,214,160,0.4)" rx="2"/>
-  <text x="335" y="50" fill="rgba(6,214,160,0.6)" font-size="10">220Hz (泛音)</text>
-
-  <!-- 294Hz 峰 (泛音) -->
-  <rect x="418" y="65" width="10" height="65" fill="rgba(255,209,102,0.4)" rx="2"/>
-  <text x="412" y="60" fill="rgba(255,209,102,0.6)" font-size="10">294Hz (泛音)</text>
-</svg>
-
-<div class="highlight">
-  <p><strong>核心思想：</strong>时域 = 波形随时间变化（波形图）。频域 = 每个频率各有多少能量（频谱图）。</p>
-  <p>同一段声音，两种视角。就像你可以说"今天气温每小时都在变"（时域），也可以说"今天最高温 25°C，最低 15°C"（频域——不过是按频率分的）。</p>
+<div class="demo-box">
+  <h4>交互：左右对比——同一段声音的两种呈现</h4>
+  <p style="font-size:13px;color:var(--text2)">拖动滑块改变频率，观察时域和频域的同步变化</p>
+  <label>基频: <span id="tdfdFreq">110</span> Hz</label>
+  <input type="range" id="tdfdSlider" min="60" max="350" value="110" step="1">
+  <canvas id="tdfdDemo" width="740" height="200"></canvas>
 </div>
 
-<!-- ======== 第6章 ======== -->
+<script>
+(function(){
+  const canvas = document.getElementById('tdfdDemo');
+  const ctx = canvas.getContext('2d');
+  const slider = document.getElementById('tdfdSlider');
+  const label = document.getElementById('tdfdFreq');
+  let freq = 110, phase = 0, lastT = 0;
+
+  slider.addEventListener('input', () => {
+    freq = parseInt(slider.value);
+    label.textContent = freq;
+  });
+
+  function draw(ts) {
+    const dt = lastT ? Math.min((ts-lastT)/1000, 0.05) : 0.016;
+    lastT = ts;
+    phase += 2 * Math.PI * freq * dt;
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const midX = w/2;
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(midX, 10); ctx.lineTo(midX, h-10); ctx.stroke();
+
+    // 左：时域
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = '11px sans-serif';
+    ctx.fillText('时域（波形图）', 20, 18);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.beginPath(); ctx.moveTo(10, h/2); ctx.lineTo(midX-10, h/2); ctx.stroke();
+
+    // 三个谐波合成
+    ctx.beginPath();
+    ctx.strokeStyle = '#4cc9f0'; ctx.lineWidth = 2;
+    ctx.shadowBlur = 6; ctx.shadowColor = '#4cc9f0';
+    for (let x = 10; x < midX-10; x++) {
+      const t = (x-10)/(midX-20) * 0.03;
+      let y = Math.sin(2*Math.PI*freq*t + phase)
+            + 0.5*Math.sin(2*Math.PI*freq*2*t + phase*2)
+            + 0.33*Math.sin(2*Math.PI*freq*3*t + phase*3);
+      y = h/2 - y * (h/2-20) / 1.8;
+      if (x===10) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // 右：频域
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.fillText('频域（频谱图）', midX + 16, 18);
+
+    const barLeft = midX + 30, barRight = w - 20, barTop = 30, barBottom = h - 15;
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.beginPath(); ctx.moveTo(barLeft, barBottom); ctx.lineTo(barRight, barBottom); ctx.stroke();
+
+    const harmonics = [{f:freq, amp:1.0, c:'#06d6a0'},{f:freq*2, amp:0.5, c:'#ffd166'},{f:freq*3, amp:0.33, c:'#ef476f'}];
+    const maxF = Math.max(...harmonics.map(h=>h.f)) * 1.2;
+    harmonics.forEach(h => {
+      const x = barLeft + (h.f/maxF) * (barRight-barLeft);
+      const barH = h.amp * (barBottom-barTop);
+      ctx.fillStyle = h.c;
+      ctx.fillRect(x-8, barBottom-barH, 16, barH);
+      ctx.fillStyle = h.c;
+      ctx.font = '9px monospace';
+      ctx.fillText(`${Math.round(h.f)}Hz`, x-18, barBottom+14);
+    });
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<p>在<strong>时域</strong>里，所有频率成分混在一起，一团乱麻。在<strong>频域</strong>里，每个频率成分各一个柱子，一目了然。</p>
+<p>这就是 <strong>傅里叶变换</strong>要做的事——把时域的"大杂烩"拆成频域的"成分表"。</p>
+
+<!-- ==================== 第6章 ==================== -->
 <h2 id="ch6">6. 傅里叶变换：从时域到频域的桥梁</h2>
 
-<h3>6.1 直觉理解</h3>
-
-<p>傅里叶变换的核心思想非常简单：</p>
-
+<h3>6.1 核心直觉</h3>
 <div class="highlight">
-  <p><strong>任何一个复杂的波形，都可以拆解成若干个不同频率的正弦波的叠加。</strong></p>
+  <p><strong>任何一个复杂的波形，都可以拆解成若干个不同频率的正弦波之和。</strong></p>
 </div>
+<p>就像果汁可以分解成"水 + 糖 + 维C + 色素"一样，傅里叶变换把一个声音分解成"82Hz的分量 + 110Hz的分量 + 164Hz的分量 + ……"</p>
 
-<p>打个比方：就像你可以把一杯果汁分解成"水 + 糖 + 维生素C + 色素……"一样，傅里叶变换可以把一段声音分解成"82Hz 的分量 + 110Hz 的分量 + 164Hz 的分量 + ……”</p>
-
-<h3>6.2 乘法检测法</h3>
-
-<p>不需要高深的数学。傅里叶变换的原理可以用一个简单的想法来理解：</p>
+<h3>6.2 "乘法检测法"——高中数学就够</h3>
+<p>不靠高深数学。傅里叶变换的原理就是：</p>
 
 <div class="step">
-  <div class="step-num">1</div>
-  <p><strong>猜测：</strong>我怀疑这段声音里有 110Hz 的成分。我生成一个标准的 110Hz 正弦波。</p>
+  <div class="step-num">1</div><div class="step-body"><p>怀疑声音里有 110Hz。生成一个标准 110Hz 正弦波。</p></div>
 </div>
 <div class="step">
-  <div class="step-num">2</div>
-  <p><strong>对比：</strong>在每一个时间点上，把<strong>实际信号的值</strong> × <strong>标准 110Hz 正弦波的值</strong>，然后把所有乘积加起来。</p>
+  <div class="step-num">2</div><div class="step-body"><p><strong>逐点相乘再求和：</strong>在每个时间点，实际信号的值 × 标准波的值，全部加起来。</p></div>
 </div>
 <div class="step">
-  <div class="step-num">3</div>
-  <p><strong>结果：</strong>如果声音里确实有 110Hz 的成分，两个波"同步"，乘积大部分为正，加起来是一个很大的数。如果声音里没有 110Hz，两个波"不相关"，乘积正负抵消，加起来接近 0。</p>
+  <div class="step-num">3</div><div class="step-body"><p>如果声音里确实有 110Hz，两个波同步 → 乘积大多为正 → 总和很大。<br>如果没有 110Hz，两波不相关 → 乘积正负抵消 → 总和接近 0。</p></div>
 </div>
 
-<svg viewBox="0 0 700 200" width="700" height="200">
-  <rect width="700" height="200" fill="#0d1117" rx="8"/>
-  <text x="350" y="18" fill="#a0a0b8" font-size="12" text-anchor="middle">上方：标准 110Hz 波 &nbsp;|&nbsp; 下方：实际信号</text>
-
-  <!-- 标准波 -->
-  <polyline fill="none" stroke="#ffd166" stroke-width="1.5" points="
-    60,50 77,20 94,50 111,80 128,50 145,20 162,50 179,80 196,50
-    213,20 230,50 247,80 264,50 281,20 298,50 315,80 332,50
-    349,20 366,50 383,80 400,50 417,20 434,50 451,80 468,50
-    485,20 502,50 519,80 536,50 553,20 570,50 587,80 604,50
-    621,20 638,50
-  "/>
-  <text x="645" y="48" fill="#ffd166" font-size="10">标准波</text>
-
-  <!-- 同步的情况 -->
-  <polyline fill="none" stroke="#06d6a0" stroke-width="1.5" points="
-    60,100 77,70 94,100 111,130 128,100 145,70 162,100 179,130 196,100
-    213,70 230,100 247,130 264,100 281,70 298,100 315,130 332,100
-    349,70 366,100 383,130 400,100 417,70 434,100 451,130 468,100
-    485,70 502,100 519,130 536,100 553,70 570,100 587,130 604,100
-    621,70 638,100
-  "/>
-  <text x="645" y="98" fill="#06d6a0" font-size="10">包含 110Hz 的信号</text>
-
-  <!-- 不相关的情况 -->
-  <polyline fill="none" stroke="#ef476f" stroke-width="1.5" points="
-    60,150 80,130 100,170 120,140 140,160 160,120 180,155 200,135
-    220,165 240,145 260,175 280,130 300,155 320,125 340,160 360,140
-    380,170 400,150 420,180 440,135 460,165 480,145 500,160 520,130
-    540,175 560,140 580,155 600,125 620,170 638,150
-  "/>
-  <text x="645" y="148" fill="#ef476f" font-size="10">不包含 110Hz 的信号</text>
-
-  <!-- 底部说明 -->
-  <text x="350" y="192" fill="#a0a0b8" font-size="11" text-anchor="middle">
-    绿线：乘积大（检测到！）&nbsp;&nbsp;&nbsp; 红线：乘积抵消（没检测到）
-  </text>
-</svg>
-
-<div class="highlight">
-  <p><strong>傅里叶变换本质上就是：</strong>对每一个可能的频率，都用上面的"乘法检测法"算一遍，得到每个频率的"存在度"分数。所有频率的分数排在一起，就是频谱图。</p>
+<div class="demo-box">
+  <h4>交互：乘法检测法的可视化</h4>
+  <p style="font-size:13px;color:var(--text2)">上面是标准波，下面是被检测的信号。观察"逐点相乘"的结果</p>
+  <label>检测频率: <span id="detFreq">110</span> Hz</label>
+  <input type="range" id="detSlider" min="50" max="300" value="110" step="1">
+  <canvas id="corrDemo" width="740" height="160"></canvas>
 </div>
 
-<h3>6.3 数学表达（可选）</h3>
+<script>
+(function(){
+  const canvas = document.getElementById('corrDemo');
+  const ctx = canvas.getContext('2d');
+  const slider = document.getElementById('detSlider');
+  const label = document.getElementById('detFreq');
+  let detFreq = 110, phase = 0, lastT = 0;
+  const sigFreq = 110; // 模拟信号真正的频率
 
-<p>如果你好奇公式的样子：</p>
+  slider.addEventListener('input', () => {
+    detFreq = parseInt(slider.value);
+    label.textContent = detFreq;
+  });
+
+  function draw(ts) {
+    const dt = lastT ? Math.min((ts-lastT)/1000, 0.05) : 0.016;
+    lastT = ts;
+    phase += 2*Math.PI*sigFreq*dt;
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+
+    const t1=h*0.25, t2=h*0.6, t3=h*0.88;
+
+    // 检测波
+    ctx.beginPath(); ctx.strokeStyle='#ffd166'; ctx.lineWidth=1.5;
+    for (let x=10;x<w-10;x++) {
+      const t=(x-10)/(w-20)*0.05;
+      const y=t1-Math.sin(2*Math.PI*detFreq*t)*(t1-8);
+      if(x===10) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.fillStyle='#ffd166'; ctx.font='11px sans-serif'; ctx.fillText('标准'+detFreq+'Hz波',16,t1-14);
+
+    // 信号（含多个谐波）
+    ctx.beginPath(); ctx.strokeStyle='#4cc9f0'; ctx.lineWidth=1.5;
+    for(let x=10;x<w-10;x++){
+      const t=(x-10)/(w-20)*0.05;
+      const y=t2-Math.sin(2*Math.PI*sigFreq*t+phase)*(t1-8)*0.5
+             -Math.sin(2*Math.PI*sigFreq*2*t+phase*2)*(t1-8)*0.25
+             -Math.sin(2*Math.PI*sigFreq*3*t+phase*3)*(t1-8)*0.15;
+      if(x===10) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.fillStyle='#4cc9f0'; ctx.fillText('实际信号（含多个谐波）',16,t2-14);
+
+    // 乘积区域（用颜色深浅表示乘积大小）
+    const match = Math.abs(detFreq - sigFreq) < 2 || Math.abs(detFreq - sigFreq*2) < 3 || Math.abs(detFreq - sigFreq*3) < 5;
+    const barH = h*0.06;
+    for (let x=10; x<w-10; x+=3) {
+      const t = (x-10)/(w-20)*0.05;
+      const ref = Math.sin(2*Math.PI*detFreq*t);
+      const sig = Math.sin(2*Math.PI*sigFreq*t+phase)*0.5
+                + Math.sin(2*Math.PI*sigFreq*2*t+phase*2)*0.25
+                + Math.sin(2*Math.PI*sigFreq*3*t+phase*3)*0.15;
+      const prod = ref * sig;
+      const alpha = Math.abs(prod);
+      ctx.fillStyle = prod > 0
+        ? `rgba(6,214,160,${alpha*1.2})`
+        : `rgba(239,71,111,${alpha*1.2})`;
+      ctx.fillRect(x, t3-barH/2, 3, barH);
+    }
+    ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font='11px sans-serif';
+    ctx.fillText('点乘结果（绿=正, 红=负, 越亮越强）', 16, t3+4);
+
+    // 求和显示
+    let sum = 0;
+    for (let x=10; x<w-10; x+=3) {
+      const t = (x-10)/(w-20)*0.05;
+      sum += Math.sin(2*Math.PI*detFreq*t) * (
+        Math.sin(2*Math.PI*sigFreq*t+phase)*0.5
+        + Math.sin(2*Math.PI*sigFreq*2*t+phase*2)*0.25
+        + Math.sin(2*Math.PI*sigFreq*3*t+phase*3)*0.15
+      );
+    }
+    const matchText = match ? '✅ 匹配！总和很大' : '❌ 不匹配，正负抵消';
+    const matchColor = match ? '#06d6a0' : '#ef476f';
+    ctx.fillStyle = matchColor;
+    ctx.fillText(matchText, w-200, t3+4);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
 
 <div class="formula">
-  X(f) = ∫ x(t) · e<sup>−i·2πft</sup> dt &nbsp;&nbsp;&nbsp; （连续版）<br><br>
-  X[k] = Σ x[n] · e<sup>−i·2π·k·n/N</sup> &nbsp;&nbsp;&nbsp; （离散版，计算机用的）
+  离散傅里叶变换公式（计算机用的版本）：<br>
+  X[k] = Σ x[n] · e<sup>−i·2π·k·n/N</sup><br><br>
+  核心 = 用每个频率 k 去"试探"信号 + 计算相关度。<br>
+  复数 e<sup>−i·2π·k·n/N</sup> 只是为了同时检测相位，本质就是上面的乘法检测法。
 </div>
 
-<p>别被 e 和 ∫ 吓到。核心就是上面说的：<strong>用不同频率的标准波去"试探"信号，看哪个频率跟信号最匹配。</strong> e 的出现只是因为用复数可以同时检测相位（波的位置偏移），本质是一样的。</p>
-
-<!-- ======== 第7章 ======== -->
+<!-- ==================== 第7章 ==================== -->
 <h2 id="ch7">7. FFT：让计算机快速做傅里叶变换</h2>
-
-<p>如果要对 N 个采样点做傅里叶变换，暴力计算每个频率需要 O(N²) 次乘法。N=2048 时，就是约 400 万次运算——对实时调音来说太慢了。</p>
-
-<p><strong>快速傅里叶变换（FFT）</strong>是一个巧妙的算法优化，利用对称性把运算量降到 O(N·log₂N)：</p>
-
+<p>暴力算每个频率需要 O(N²) 次乘法。N=2048 时约 400 万次——太慢了。</p>
+<p><strong>快速傅里叶变换（FFT）</strong>利用对称性把运算降到 O(N·log₂N)：</p>
 <table>
-  <tr><th>采样点数 N</th><th>暴力法</th><th>FFT</th><th>加速比</th></tr>
+  <tr><th>采样点 N</th><th>暴力法</th><th>FFT</th><th>加速</th></tr>
   <tr><td>256</td><td>65,536</td><td>2,048</td><td>32×</td></tr>
   <tr><td>1024</td><td>1,048,576</td><td>10,240</td><td>102×</td></tr>
   <tr><td><strong>2048</strong></td><td><strong>4,194,304</strong></td><td><strong>22,528</strong></td><td><strong>186×</strong></td></tr>
@@ -506,178 +565,187 @@
 </table>
 
 <div class="note-box">
-  <p><strong>不用理解 FFT 的具体算法。</strong>浏览器内置的 Web Audio API 已经帮你做好了——调用 <code>getByteFrequencyData()</code>，浏览器底层用高度优化的 FFT 实现，几十微秒就能算完一帧。你只需要拿来用。</p>
+  <p><strong>不用你自己写 FFT。</strong>浏览器的 <code>getByteFrequencyData()</code> 底层就用高度优化的 FFT，几十微秒算完一帧。频谱图就是 FFT 的结果直接画出来的。</p>
 </div>
 
-<!-- ======== 第8章 ======== -->
+<!-- ==================== 第8章 ==================== -->
 <h2 id="ch8">8. 自相关算法：另一种检测音高的方法</h2>
 
-<h3>8.1 为什么不用 FFT 直接测音高？</h3>
+<h3>为什么不用 FFT 直接测音高？</h3>
+<p>FFT 的频率分辨率太粗。2048 点 FFT @ 44100Hz，每个 bin 宽 21.5Hz。对调音来说不够——82Hz 和 104Hz 可能落在同一个 bin 里。</p>
+<p>所以频谱图拿来看泛音分布，而<strong>实际测基频用自相关算法</strong>，精度可以到 0.1Hz 以下。</p>
 
-<p>FFT 适合看频谱全貌，但直接用它测基频有一个问题：<strong>频率分辨率有限</strong>。FFT size=2048、采样率 44100Hz 时，每个 bin 宽约 21.5Hz。对于调音需要精确到 1Hz 以内的要求，这不够精细。</p>
+<h3>自相关的直观理解</h3>
+<p>把信号和它自己的"延迟版"做比较，看延迟多少时最像：</p>
 
-<p>所以频谱图用来看泛音分布，而<strong>实际测音高用自相关算法</strong>。</p>
-
-<h3>8.2 自相关的直觉</h3>
-
-<p>自相关（Autocorrelation）的思想也很简单：<strong>把一个波形和它自己的"延迟版"做比较，看延迟多少时最像。</strong></p>
-
-<div class="step">
-  <div class="step-num">1</div>
-  <p><strong>把信号复制一份，往后挪一点点</strong>（比如挪 1 个采样点），跟原信号对比，算一个"相似度分数"。</p>
-</div>
-<div class="step">
-  <div class="step-num">2</div>
-  <p><strong>再往后挪一点，再算分数。</strong>一直挪，一直算。</p>
-</div>
-<div class="step">
-  <div class="step-num">3</div>
-  <p><strong>当延迟恰好等于一个周期时</strong>，两个波形完美重叠，相似度达到峰值。这个延迟就是周期 T，频率 f = 1/T。</p>
+<div class="demo-box">
+  <h4>交互：自相关算法可视化</h4>
+  <p style="font-size:13px;color:var(--text2)">拖动滑块改变延迟量，延迟恰好等于一个周期时，两条曲线完全对齐</p>
+  <label>延迟（采样点）: <span id="lagVal">20</span> | 对应频率: <span id="lagFreq">2205</span> Hz</label>
+  <input type="range" id="lagSlider" min="1" max="200" value="20" step="1">
+  <canvas id="autoCorrDemo" width="740" height="150"></canvas>
 </div>
 
-<svg viewBox="0 0 700 180" width="700" height="180">
-  <rect width="700" height="180" fill="#0d1117" rx="8"/>
-  <text x="350" y="18" fill="#a0a0b8" font-size="12" text-anchor="middle">延迟 = 正好一个周期 → 完美匹配 → 找到基频！</text>
+<script>
+(function(){
+  const canvas = document.getElementById('autoCorrDemo');
+  const ctx = canvas.getContext('2d');
+  const lagSlider = document.getElementById('lagSlider');
+  const lagVal = document.getElementById('lagVal');
+  const lagFreq = document.getElementById('lagFreq');
+  const SAMPLE_RATE = 44100;
+  // 模拟一个 220Hz 的信号（周期 = 200 采样点 @ 44100Hz）
+  const PERIOD = 200;
+  let lag = 20;
 
-  <!-- 原信号 -->
-  <polyline fill="none" stroke="#4cc9f0" stroke-width="2" points="
-    40,55 60,25 80,55 100,85 120,55 140,25 160,55 180,85 200,55
-    220,25 240,55 260,85 280,55 300,25 320,55 340,85 360,55
-    380,25 400,55 420,85 440,55 460,25 480,55 500,85 520,55
-    540,25 560,55 580,85 600,55 620,25 640,55
-  "/>
-  <text x="650" y="52" fill="#4cc9f0" font-size="10">原信号</text>
+  function signal(i) {
+    return Math.sin(2*Math.PI*i/PERIOD)
+         + 0.4*Math.sin(2*Math.PI*i*2/PERIOD)
+         + 0.2*Math.sin(2*Math.PI*i*3/PERIOD);
+  }
 
-  <!-- 延迟后的信号 - 对齐 -->
-  <polyline fill="none" stroke="#06d6a0" stroke-width="2" stroke-dasharray="6,3" points="
-    120,110 140,80 160,110 180,140 200,110 220,80 240,110 260,140 280,110
-    300,80 320,110 340,140 360,110 380,80 400,110 420,140 440,110
-    460,80 480,110 500,140 520,110 540,80 560,110 580,140 600,110
-    620,80 640,110
-  "/>
-  <text x="650" y="107" fill="#06d6a0" font-size="10">延迟副本</text>
+  lagSlider.addEventListener('input', () => {
+    lag = parseInt(lagSlider.value);
+    lagVal.textContent = lag;
+    lagFreq.textContent = (SAMPLE_RATE / lag).toFixed(1);
+    if (lag === PERIOD) lagFreq.textContent += ' ← 刚好对齐！';
+  });
 
-  <!-- 对齐标记 -->
-  <line x1="40" y1="140" x2="120" y2="140" stroke="#ffd166" stroke-width="1"/>
-  <line x1="40" y1="140" x2="40" y2="50" stroke="#ffd166" stroke-width="1" stroke-dasharray="2,2"/>
-  <line x1="120" y1="140" x2="120" y2="105" stroke="#ffd166" stroke-width="1" stroke-dasharray="2,2"/>
-  <text x="80" y="155" fill="#ffd166" font-size="10" text-anchor="middle">延迟 = 1 个周期</text>
-</svg>
+  function draw() {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0,0,w,h);
 
-<h3>8.3 计算公式</h3>
+    // 原信号
+    ctx.beginPath(); ctx.strokeStyle='#4cc9f0'; ctx.lineWidth=2;
+    for (let x=10; x<w-10; x++) {
+      const i = Math.floor((x-10)/(w-20)*400);
+      const y = h*0.35 - signal(i)*(h*0.25);
+      if (x===10) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.fillStyle='#4cc9f0'; ctx.font='12px sans-serif'; ctx.fillText('原信号', 16, 22);
+
+    // 延迟信号
+    ctx.beginPath(); ctx.strokeStyle='#ffd166'; ctx.lineWidth=2;
+    ctx.setLineDash([6,3]);
+    for (let x=10; x<w-10; x++) {
+      const i = Math.floor((x-10)/(w-20)*400);
+      const y = h*0.75 - signal(i+lag)*(h*0.25);
+      if (x===10) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#ffd166'; ctx.fillText('延迟 ' + lag + ' 采样点', 16, h*0.75-14);
+
+    // 完美对齐指示
+    if (Math.abs(lag - PERIOD) < 3) {
+      ctx.fillStyle = 'rgba(6,214,160,0.15)';
+      ctx.fillRect(0,0,w,h);
+      ctx.fillStyle = '#06d6a0';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.fillText('✓ 完美匹配！周期 = ' + lag + ' 采样点，频率 = ' + (SAMPLE_RATE/lag).toFixed(1) + ' Hz', 16, h-8);
+    }
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<div class="step">
+  <div class="step-num">1</div><div class="step-body"><p>把信号复制一份，往后挪 k 个采样点。</p></div>
+</div>
+<div class="step">
+  <div class="step-num">2</div><div class="step-body"><p>计算归一化相关系数 r(k)。每个 k 有一个分数。</p></div>
+</div>
+<div class="step">
+  <div class="step-num">3</div><div class="step-body"><p>找到使 r(k) <strong>最大</strong>的那个 k → 这就是一个周期的采样点数 → 频率 = 采样率/k。</p></div>
+</div>
 
 <div class="formula">
-  对于延迟 k：&nbsp;&nbsp; r(k) = Σ x[i] · x[i+k] / √( Σ x[i]² · Σ x[i+k]² )<br><br>
-  找到使 r(k) 最大的 k → 周期 = k → 频率 = 采样率 / k
+  归一化自相关：<br>
+  r(k) = Σ x[i]·x[i+k] / √(Σ x[i]² · Σ x[i+k]²)<br><br>
+  这就是高中数学的<strong>相关系数</strong>（Pearson 系数），衡量两组数据的相似度。<br>
+  结果在 −1 到 1 之间，接近 1 表示高度相似。
 </div>
 
-<p>这个公式就是高中数学的<strong>相关系数</strong>——衡量两组数据有多"像"。分子是协方差，分母是标准差乘积，结果在 −1 到 1 之间。</p>
-
-<div class="highlight">
-  <p><strong>一句话：</strong>自相关就是让信号和自己延迟后的版本"对位"，找到最对齐的那个延迟，就找到了周期，从而得到频率。</p>
-</div>
-
-<div class="note-box">
-  <p><strong>为什么自相关比 FFT 更适合测音高？</strong>FFT 的频率分辨率是固定的（每个 bin 约 21.5Hz），而自相关的精度取决于采样率，用抛物线插值后可以达到亚采样点精度（通常 < 0.1Hz），足够满足调音需求。</p>
-</div>
-
-<!-- ======== 第9章 ======== -->
+<!-- ==================== 第9章 ==================== -->
 <h2 id="ch9">9. 音分（Cents）：衡量音准的单位</h2>
-
-<p>检测到了频率 f，怎么告诉用户"偏高还是偏低多少"？</p>
-
-<p>直接用 Hz 差值不直观——对 82Hz 的低音 E 来说，差 1Hz 很明显；对 330Hz 的高音 E 来说，几乎听不出来。需要一个<strong>对数单位</strong>：</p>
+<p>检测到频率后，用<strong>音分</strong>告诉用户偏离了多少。直接用 Hz 差值不直观：</p>
+<ul style="color:var(--text2);margin-left:20px;margin-bottom:12px;">
+  <li>对 82Hz 低音来说，差 1Hz 就很明显</li>
+  <li>对 330Hz 高音来说，差 1Hz 几乎听不出</li>
+</ul>
 
 <div class="formula">
   cents = 1200 · log<sub>2</sub>(f<sub>检测</sub> / f<sub>目标</sub>)
 </div>
 
-<ul style="color: var(--text-secondary); margin-left: 20px;">
-  <li><strong>0 音分</strong> = 完全准</li>
-  <li><strong>+100 音分</strong> = 偏高一个半音</li>
-  <li><strong>−100 音分</strong> = 偏低一个半音</li>
-  <li><strong>±5 音分以内</strong> = 人耳基本听不出的误差，视为"已调准"</li>
-</ul>
-
-<div class="table">
 <table>
-  <tr><th>偏差 (音分)</th><th>82Hz 弦对应的 Hz</th><th>330Hz 弦对应的 Hz</th><th>听感</th></tr>
+  <tr><th>偏差 (音分)</th><th>82Hz 弦对应 Hz</th><th>330Hz 弦对应 Hz</th><th>听感</th></tr>
   <tr><td>0</td><td>82.41</td><td>329.63</td><td>完美</td></tr>
-  <tr><td>+5</td><td>82.65 (+0.24)</td><td>330.59 (+0.96)</td><td>几乎听不出</td></tr>
-  <tr><td>+25</td><td>83.61 (+1.20)</td><td>334.46 (+4.83)</td><td>能听出偏差</td></tr>
-  <tr><td>+100</td><td>87.31 (+4.90)</td><td>349.23 (+19.6)</td><td>差了一个半音</td></tr>
+  <tr><td>±5</td><td>82.17 / 82.65</td><td>328.68 / 330.59</td><td>几乎听不出</td></tr>
+  <tr><td>±25</td><td>81.23 / 83.61</td><td>324.86 / 334.46</td><td>能听出</td></tr>
+  <tr><td>+100</td><td>87.31</td><td>349.23</td><td>差整整一个半音</td></tr>
 </table>
-</div>
 
-<p>注意看表格：同样是 +5 音分，82Hz 弦只差 0.24Hz，330Hz 弦却差了 0.96Hz。这说明<strong>音分是感知上均匀的刻度</strong>，非常适合用来显示调音偏差。</p>
+<p>注意：同样是 +5 音分，82Hz 弦只差 0.24Hz，330Hz 弦却差了 0.96Hz。<strong>音分是对数刻度，和耳朵的实际感知一致。</strong></p>
 
-<!-- ======== 第10章 ======== -->
+<!-- ==================== 第10章 ==================== -->
 <h2 id="ch10">10. 调音器完整工作流程</h2>
 
-<p>把前面讲的串起来，这就是调音器每一帧做的事：</p>
+<p>每 ~16ms（60fps），调音器执行以下步骤：</p>
 
 <div class="step">
-  <div class="step-num">1</div>
-  <p><strong>采集：</strong><code>getUserMedia</code> 打开麦克风，音频流接入 <code>AudioContext</code>。</p>
+  <div class="step-num">1</div><div class="step-body"><p><strong>采集：</strong><code>getUserMedia</code> 打开麦克风，音频流接入 <code>AudioContext</code></p></div>
 </div>
 <div class="step">
-  <div class="step-num">2</div>
-  <p><strong>缓冲区：</strong><code>AnalyserNode</code> 每帧收集 2048 个采样点（约 46ms 的声音）。</p>
+  <div class="step-num">2</div><div class="step-body"><p><strong>缓冲区：</strong><code>AnalyserNode</code> 收集 2048 个采样点（约 46ms 的声音）</p></div>
 </div>
 <div class="step">
-  <div class="step-num">3</div>
-  <p><strong>三条并行处理：</strong></p>
-  <table>
-    <tr><th>数据源</th><th>用于</th><th>展示在</th></tr>
-    <tr><td><code>getFloatTimeDomainData</code></td><td>波形图</td><td>上方画布</td></tr>
-    <tr><td><code>getByteFrequencyData</code></td><td>频谱图 (FFT)</td><td>中间画布</td></tr>
-    <tr><td>自相关算法</td><td>检测基频</td><td>音符 / 表盘</td></tr>
-  </table>
+  <div class="step-num">3</div><div class="step-body">
+    <p><strong>三线并行处理：</strong></p>
+    <table>
+      <tr><th>数据</th><th>方法</th><th>用途</th><th>显示</th></tr>
+      <tr><td>时域采样点</td><td><code>getFloatTimeDomainData</code></td><td>画波形</td><td>波形图</td></tr>
+      <tr><td>频域数据</td><td><code>getByteFrequencyData</code> (FFT)</td><td>画频谱</td><td>频谱图</td></tr>
+      <tr><td>时域采样点</td><td>自相关算法</td><td>检测基频</td><td>音符名/表盘</td></tr>
+    </table>
+  </div>
 </div>
 <div class="step">
-  <div class="step-num">4</div>
-  <p><strong>信号强度检查：</strong>计算 RMS。如果 < 0.002，说明没声音，跳过检测。</p>
+  <div class="step-num">4</div><div class="step-body"><p><strong>信号强度检查：</strong>RMS 低于 0.002 → 没声音，跳过本次检测</p></div>
 </div>
 <div class="step">
-  <div class="step-num">5</div>
-  <p><strong>自相关：</strong>计算归一化自相关，找到最大相关峰对应的延迟 → 基频。</p>
+  <div class="step-num">5</div><div class="step-body"><p><strong>自相关 → 基频：</strong>归一化自相关 + 抛物线插值 → 精确频率</p></div>
 </div>
 <div class="step">
-  <div class="step-num">6</div>
-  <p><strong>中值滤波：</strong>连续 5 帧取中位数，滤除偶然的跳变值。</p>
+  <div class="step-num">6</div><div class="step-body"><p><strong>中值滤波：</strong>连续 5 帧取中位数，消除偶然跳变</p></div>
 </div>
 <div class="step">
-  <div class="step-num">7</div>
-  <p><strong>匹配最近音符：</strong>用公式 <code>n = 69 + 12·log₂(f/440)</code> 找到最近的 MIDI 音符。</p>
+  <div class="step-num">7</div><div class="step-body"><p><strong>匹配音符：</strong>n = 69 + 12·log₂(f/440) → 最近 MIDI 音符</p></div>
 </div>
 <div class="step">
-  <div class="step-num">8</div>
-  <p><strong>计算音分偏差：</strong>用公式 <code>cents = 1200·log₂(f/f目标)</code> 算出偏离目标多少音分。</p>
+  <div class="step-num">8</div><div class="step-body"><p><strong>计算偏差：</strong>cents = 1200·log₂(f/f<sub>目标</sub>) → 音分</p></div>
 </div>
 <div class="step">
-  <div class="step-num">9</div>
-  <p><strong>更新 UI：</strong>表盘指针、音符名、偏差值、波形图、频谱图一起刷新。</p>
-</div>
-
-<div class="highlight">
-  <p><strong>整个循环每 ~16ms（60fps，requestAnimationFrame）跑一次，人眼看起来就是实时响应。</strong></p>
+  <div class="step-num">9</div><div class="step-body"><p><strong>更新界面：</strong>表盘指针、音符名、偏差值、波形图、频谱图一起刷新</p></div>
 </div>
 
 <h3>代码对应关系</h3>
-
 <table>
-  <tr><th>步骤</th><th>文件</th><th>核心代码</th></tr>
-  <tr><td>1-2. 采集+缓冲区</td><td>js/tuner.js</td><td><code>GuitarTuner.start()</code></td></tr>
-  <tr><td>3. 三条处理</td><td>js/tuner.js → app.js</td><td><code>_loop() → onPitchDetected()</code></td></tr>
-  <tr><td>4. RMS 检查</td><td>js/tuner.js</td><td><code>rms &lt; 0.002 → return -1</code></td></tr>
-  <tr><td>5. 自相关</td><td>js/tuner.js</td><td><code>_detectPitch()</code></td></tr>
-  <tr><td>6. 中值滤波</td><td>js/tuner.js</td><td><code>freqHistory</code> 数组</td></tr>
-  <tr><td>7. 匹配音符</td><td>js/tunings.js</td><td><code>getNoteFromFrequency()</code></td></tr>
-  <tr><td>8. 音分偏差</td><td>js/tunings.js</td><td><code>getCentsDifference()</code></td></tr>
-  <tr><td>9. 更新 UI</td><td>js/app.js</td><td><code>updateNoteDisplay()</code> 等</td></tr>
+  <tr><th>步骤</th><th>文件</th><th>函数/代码</th></tr>
+  <tr><td>1-2</td><td>js/tuner.js</td><td><code>GuitarTuner.start()</code></td></tr>
+  <tr><td>3</td><td>js/tuner.js → app.js</td><td><code>_loop() → onPitchDetected()</code></td></tr>
+  <tr><td>4</td><td>js/tuner.js:97</td><td><code>rms &lt; 0.002 → return -1</code></td></tr>
+  <tr><td>5</td><td>js/tuner.js:109</td><td><code>_detectPitch()</code></td></tr>
+  <tr><td>6</td><td>js/tuner.js:78</td><td><code>freqHistory</code> 中位数</td></tr>
+  <tr><td>7</td><td>js/tunings.js</td><td><code>getNoteFromFrequency()</code></td></tr>
+  <tr><td>8</td><td>js/tunings.js</td><td><code>getCentsDifference()</code></td></tr>
+  <tr><td>9</td><td>js/app.js</td><td><code>updateNoteDisplay()</code> 等</td></tr>
 </table>
 
-<p style="text-align: center; margin-top: 40px;">
+<p style="text-align:center;margin-top:40px;">
   <a href="index.html" class="back-link">← 返回调音器</a>
 </p>
 
