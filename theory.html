@@ -727,7 +727,7 @@ x[7] ──→ ──→ ──→ X[7]</p>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+if (typeof renderMathInElement !== 'undefined') {
   renderMathInElement(document.body, {
     delimiters: [
       {left: "\\[", right: "\\]", display: true},
@@ -735,7 +735,9 @@ document.addEventListener("DOMContentLoaded", function() {
     ],
     throwOnError: false
   });
-});
+} else {
+  console.warn('KaTeX CDN 加载失败，公式将以原始 LaTeX 显示。请检查网络连接。');
+}
 </script>
 </body>
 </html>
