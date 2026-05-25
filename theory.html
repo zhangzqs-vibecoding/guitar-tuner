@@ -727,17 +727,36 @@ x[7] ──→ ──→ ──→ X[7]</p>
 </div>
 
 <script>
-if (typeof renderMathInElement !== 'undefined') {
-  renderMathInElement(document.body, {
-    delimiters: [
-      {left: "\\[", right: "\\]", display: true},
-      {left: "\\(", right: "\\)", display: false}
-    ],
-    throwOnError: false
-  });
-} else {
-  console.warn('KaTeX CDN 加载失败，公式将以原始 LaTeX 显示。请检查网络连接。');
-}
+(function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "\\[", right: "\\]", display: true},
+        {left: "\\(", right: "\\)", display: false}
+      ],
+      throwOnError: false
+    });
+  } else {
+    // KaTeX CDN 可能尚未加载完成，稍等再试
+    var retry = 0;
+    var timer = setInterval(function() {
+      retry++;
+      if (typeof renderMathInElement !== 'undefined') {
+        clearInterval(timer);
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: "\\[", right: "\\]", display: true},
+            {left: "\\(", right: "\\)", display: false}
+          ],
+          throwOnError: false
+        });
+      } else if (retry > 20) {
+        clearInterval(timer);
+        console.warn('KaTeX 加载超时，公式将以原始 LaTeX 显示');
+      }
+    }, 200);
+  }
+})();
 </script>
 </body>
 </html>
